@@ -2,57 +2,81 @@
 # Claude Code 平台切换脚本
 
 PLATFORMS_DIR="$HOME/.claude-platforms"
-CURRENT_FILE="$PLATFORMS_DIR/current"
+CURRENT_FILE="$PLATFORMS_DIR/.current"
+CONFIG_SCRIPT="$PLATFORMS_DIR/config.sh"
+
+# 颜色定义
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
 
 # 显示帮助
-if [ -z "$1" ]; then
+show_help() {
     echo "🔄 Claude Code 平台切换器"
     echo ""
     echo "当前平台:"
-    if [ -L "$CURRENT_FILE" ]; then
-        current=$(basename $(readlink "$CURRENT_FILE") .sh | sed 's/config-//')
-        echo "  ✅ $current"
+    if [ -f "$CURRENT_FILE" ]; then
+        current=$(cat "$CURRENT_FILE")
+        echo -e "  ${GREEN}✅ $current${NC}"
     else
-        echo "  ❌ 未配置"
+        echo -e "  ${YELLOW}⚠️  未配置${NC}"
     fi
     echo ""
     echo "可用平台:"
-    for config in "$PLATFORMS_DIR"/config-*.sh; do
-        [ -f "$config" ] || continue
-        name=$(basename "$config" .sh | sed 's/config-//')
-        echo "  - $name"
-    done 2>/dev/null
+    echo "  - glm      智谱 GLM（三层模型，性价比高）"
+    echo "  - minimax  MiniMax（超长上下文，50分钟超时）"
+    echo "  - deepseek DeepSeek（快速响应）"
+    echo "  - qwen     通义千问（稳定可靠）"
+    echo "  - claude   Claude 官方（最新功能）"
     echo ""
     echo "用法: switch <平台名>"
     echo "示例: switch glm"
+    echo ""
+    echo "切换后请执行: source $CONFIG_SCRIPT <平台名>"
+}
+
+# 检查参数
+if [ -z "$1" ]; then
+    show_help
     exit 0
 fi
 
 PLATFORM=$1
-CONFIG_FILE="$PLATFORMS_DIR/config-$PLATFORM.sh"
 
-# 检查配置文件是否存在
-if [ ! -f "$CONFIG_FILE" ]; then
-    echo "❌ 错误: 平台 '$PLATFORM' 不存在"
-    echo ""
-    echo "可用平台:"
-    for config in "$PLATFORMS_DIR"/config-*.sh; do
-        [ -f "$config" ] || continue
-        name=$(basename "$config" .sh | sed 's/config-//')
-        echo "  - $name"
-    done 2>/dev/null
+# 验证平台名称
+case "$PLATFORM" in
+    glm|minimax|deepseek|qwen|claude)
+        ;;
+    help|--help|-h)
+        show_help
+        exit 0
+        ;;
+    *)
+        echo -e "${RED}❌ 错误: 未知平台 '$PLATFORM'${NC}"
+        echo ""
+        show_help
+        exit 1
+        ;;
+esac
+
+# 检查 config.sh 是否存在
+if [ ! -f "$CONFIG_SCRIPT" ]; then
+    echo -e "${RED}❌ 错误: 未找到 config.sh${NC}"
+    echo "   请确保已安装 claude-platform-switcher"
     exit 1
 fi
 
-# 切换软链接
-ln -sf "$CONFIG_FILE" "$CURRENT_FILE"
+# 保存当前平台
+echo "$PLATFORM" > "$CURRENT_FILE"
 
-echo "✅ 已切换到: $PLATFORM"
+echo -e "${GREEN}✅ 已选择平台: $PLATFORM${NC}"
 echo ""
-echo "📝 请在当前终端执行以下命令以加载新配置："
+echo "📝 请在当前终端执行以下命令以加载配置："
 echo ""
-echo "   source ~/.claude-platforms/current"
+echo -e "   ${YELLOW}source $CONFIG_SCRIPT $PLATFORM${NC}"
 echo ""
 echo "然后启动 Claude Code:"
 echo ""
-echo "   claude"
+echo "   ${YELLOW}claude${NC}"
+echo ""

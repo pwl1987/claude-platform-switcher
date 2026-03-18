@@ -1,4 +1,4 @@
-# Claude Code 平台切换器
+# Claude Code AI 平台切换器
 
 > 💡 **一句话介绍**：一个命令切换 AI 平台，省钱又稳定
 
@@ -15,16 +15,16 @@
 ```bash
 git clone https://github.com/pwl1987/claude-platform-switcher.git
 cd claude-platform-switcher
-cp -r .claude/skills/platform-switcher ~/.claude/skills/
-cp -r config-*.sh switch ~/.claude-platforms/
+
+# 复制文件到 ~/.claude-platforms/
+cp config.sh switch ~/.claude-platforms/
+cp -r scripts ~/.claude-platforms/
+cp .env.example ~/.claude-platforms/.env
 ```
 
 ### 2. 配置 API Keys
 
 ```bash
-# 复制环境变量模板
-cp .env.example ~/.claude-platforms/.env
-
 # 编辑并填入你的真实 API Keys
 nano ~/.claude-platforms/.env
 ```
@@ -54,18 +54,11 @@ chmod 600 ~/.claude-platforms/.env
 ### 4. 享受切换
 
 ```bash
-# 在 Claude Code 中直接说
-切换到智谱 GLM
-```
-
-或者使用命令：
-
-```bash
 # 切换到智谱 GLM
 ~/.claude-platforms/switch glm
 
 # 加载配置
-source ~/.claude-platforms/current
+source ~/.claude-platforms/config.sh glm
 
 # 启动 Claude Code
 claude
@@ -77,13 +70,13 @@ claude
 
 ## 🎯 支持的平台
 
-| 平台 | 特点 | 适用场景 |
-|------|------|----------|
-| **智谱 GLM** | 性价比高，三层模型 | 日常开发、编程任务 |
-| **MiniMax** | 超长上下文，50分钟超时 | 复杂任务、长代码分析 |
-| **DeepSeek** | 响应快 | 快速查询、简单问答 |
-| **通义千问** | 稳定可靠 | 企业环境、重要任务 |
-| **Claude 官方** | 最新功能 | 质量优先、测试新特性 |
+| 平台 | 命令 | 特点 | 适用场景 |
+|------|------|------|----------|
+| **智谱 GLM** | `glm` | 性价比高，三层模型 | 日常开发、编程任务 |
+| **MiniMax** | `minimax` | 超长上下文，50分钟超时 | 复杂任务、长代码分析 |
+| **DeepSeek** | `deepseek` | 响应快 | 快速查询、简单问答 |
+| **通义千问** | `qwen` | 稳定可靠 | 企业环境、重要任务 |
+| **Claude 官方** | `claude` | 最新功能 | 质量优先、测试新特性 |
 
 ---
 
@@ -112,7 +105,7 @@ claude
 ~/.claude-platforms/switch glm
 
 # 加载配置
-source ~/.claude-platforms/current
+source ~/.claude-platforms/config.sh glm
 
 # 启动 Claude Code
 claude
@@ -124,14 +117,14 @@ claude
 
 ```bash
 # Claude Code 快捷启动
-alias cc='source ~/.claude-platforms/current && claude'
+alias cc='source ~/.claude-platforms/config.sh $(cat ~/.claude-platforms/.current 2>/dev/null || echo "glm") && claude'
 
 # 各平台快捷启动
-alias cc-glm='~/.claude-platforms/switch glm && source ~/.claude-platforms/current && claude'
-alias cc-minimax='~/.claude-platforms/switch minimax && source ~/.claude-platforms/current && claude'
-alias cc-deepseek='~/.claude-platforms/switch deepseek && source ~/.claude-platforms/current && claude'
-alias cc-qwen='~/.claude-platforms/switch qwen && source ~/.claude-platforms/current && claude'
-alias cc-claude='~/.claude-platforms/switch claude && claude'
+alias cc-glm='~/.claude-platforms/switch glm && source ~/.claude-platforms/config.sh glm && claude'
+alias cc-minimax='~/.claude-platforms/switch minimax && source ~/.claude-platforms/config.sh minimax && claude'
+alias cc-deepseek='~/.claude-platforms/switch deepseek && source ~/.claude-platforms/config.sh deepseek && claude'
+alias cc-qwen='~/.claude-platforms/switch qwen && source ~/.claude-platforms/config.sh qwen && claude'
+alias cc-claude='~/.claude-platforms/switch claude && source ~/.claude-platforms/config.sh claude && claude'
 ```
 
 使用：
@@ -170,23 +163,37 @@ cc-minimax   # 启动 MiniMax
   ✅ glm
 
 可用平台:
-  - deepseek
-  - glm
-  - minimax
-  - qwen
-  - claude
+  - glm      智谱 GLM（三层模型，性价比高）
+  - minimax  MiniMax（超长上下文，50分钟超时）
+  - deepseek DeepSeek（快速响应）
+  - qwen     通义千问（稳定可靠）
+  - claude   Claude 官方（最新功能）
 ```
 
 ---
 
 ## 🔧 配置说明
 
-所有平台配置都从 `~/.claude-platforms/.env` 文件读取 API Keys，确保安全。
+### config.sh - 统一配置脚本
+
+所有平台配置都通过 `config.sh` 统一管理，从 `~/.claude-platforms/.env` 文件读取 API Keys。
+
+```bash
+# 用法
+source config.sh <platform>
+
+# 示例
+source config.sh glm
+source config.sh minimax
+source config.sh deepseek
+source config.sh qwen
+source config.sh claude
+```
 
 ### 智谱 GLM（推荐日常使用）
 
 ```bash
-~/.claude-platforms/config-glm.sh
+source ~/.claude-platforms/config.sh glm
 ```
 
 配置：
@@ -203,7 +210,7 @@ export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5"
 ### MiniMax（复杂任务）
 
 ```bash
-~/.claude-platforms/config-minimax.sh
+source ~/.claude-platforms/config.sh minimax
 ```
 
 配置：
@@ -219,7 +226,7 @@ export ANTHROPIC_MODEL="MiniMax-M2.7"
 ### DeepSeek（快速查询）
 
 ```bash
-~/.claude-platforms/config-deepseek.sh
+source ~/.claude-platforms/config.sh deepseek
 ```
 
 配置：
@@ -232,7 +239,7 @@ export ANTHROPIC_MODEL="deepseek-chat"
 ### 通义千问（稳定可靠）
 
 ```bash
-~/.claude-platforms/config-qwen.sh
+source ~/.claude-platforms/config.sh qwen
 ```
 
 配置：
@@ -245,7 +252,7 @@ export ANTHROPIC_MODEL="qwen-plus"
 ### Claude 官方（测试新功能）
 
 ```bash
-~/.claude-platforms/config-claude.sh
+source ~/.claude-platforms/config.sh claude
 ```
 
 配置：
@@ -266,12 +273,17 @@ unset ANTHROPIC_API_KEY
          │
          ▼
 ┌─────────────────┐
-│  config-glm.sh  │  读取配置
+│  保存 .current  │  记录平台选择
 └────────┬────────┘
          │
          ▼
 ┌─────────────────┐
-│  .env 文件      │  加载环境变量
+│  config.sh glm  │  加载配置
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  .env 文件      │  读取 API Keys
 │  GLM_API_KEY=...│
 └────────┬────────┘
          │
@@ -283,9 +295,9 @@ unset ANTHROPIC_API_KEY
 
 ### 核心机制
 
-1. **切换**：修改 `current` 软链接指向目标平台
+1. **切换**：保存平台选择到 `~/.claude-platforms/.current`
 2. **加载**：从 `.env` 文件读取 API Keys（安全）
-3. **配置**：设置环境变量到当前 shell
+3. **配置**：根据平台参数设置环境变量
 4. **启动**：Claude Code 自动读取环境变量
 
 ---
@@ -342,7 +354,7 @@ grep GLM_API_KEY ~/.claude-platforms/.env
 
 ### Q: 切换后不生效？
 
-**A**: 执行 `source ~/.claude-platforms/current` 重新加载配置。
+**A**: 执行 `source ~/.claude-platforms/config.sh <平台>` 重新加载配置。
 
 ### Q: 如何查看当前使用的平台？
 
@@ -372,43 +384,53 @@ grep GLM_API_KEY ~/.claude-platforms/.env
 
 ### 添加新平台
 
-创建配置文件：
+在 `config.sh` 中添加新的配置函数：
 
 ```bash
-cat > ~/.claude-platforms/config-新平台.sh << 'EOF'
-#!/bin/bash
+# 配置新平台
+config_newplatform() {
+    if [ -z "$NEWPLATFORM_API_KEY" ]; then
+        echo -e "${RED}❌ 错误: NEWPLATFORM_API_KEY 未在 .env 中设置${NC}"
+        exit 1
+    fi
 
-# 检查 .env 文件是否存在
-if [ ! -f "$HOME/.claude-platforms/.env" ]; then
-    echo "⚠️  警告: 未找到 .env 文件"
-    exit 1
-fi
+    export ANTHROPIC_BASE_URL="https://api.example.com/v1"
+    export ANTHROPIC_API_KEY="$NEWPLATFORM_API_KEY"
+    export ANTHROPIC_MODEL="model-name"
 
-# 加载 .env 文件
-export $(grep -v '^#' "$HOME/.claude-platforms/.env" | xargs)
-
-# 检查必要的环境变量是否设置
-if [ -z "$NEW_PLATFORM_API_KEY" ]; then
-    echo "❌ 错误: NEW_PLATFORM_API_KEY 未在 .env 中设置"
-    exit 1
-fi
-
-# 新平台配置
-export ANTHROPIC_BASE_URL="https://api.example.com/v1"
-export ANTHROPIC_API_KEY="$NEW_PLATFORM_API_KEY"
-export ANTHROPIC_MODEL="model-name"
-EOF
-
-chmod +x ~/.claude-platforms/config-新平台.sh
+    echo -e "${GREEN}✅ 已切换到新平台${NC}"
+}
 ```
 
 在 `.env` 文件中添加：
 
 ```bash
-NEW_PLATFORM_API_KEY=your-api-key
+NEWPLATFORM_API_KEY=your-api-key
 ```
 
-然后使用 `~/.claude-platforms/switch 新平台` 即可。
+然后使用 `source ~/.claude-platforms/config.sh newplatform` 即可。
+
+---
+
+## 📁 项目结构
+
+```
+claude-platform-switcher/
+├── SKILL.md              # Claude Code Skill 定义
+├── README.md             # 本文件
+├── config.sh             # 统一配置脚本
+├── switch                # 平台切换脚本
+├── .env.example          # 环境变量模板
+├── .gitignore            # Git 忽略规则
+├── LICENSE               # 许可证
+├── scripts/              # 辅助脚本
+│   ├── save_context.sh
+│   ├── restore_context.sh
+│   └── get_current_platform.sh
+└── references/           # 参考文档
+    ├── platforms.md
+    └── usage.md
+```
 
 ---
 
@@ -421,6 +443,12 @@ NEW_PLATFORM_API_KEY=your-api-key
 ---
 
 ## 📝 更新日志
+
+### v3.0.0 (2026-03-18)
+- ✅ 合并平台配置脚本为单一的 config.sh
+- ✅ 将 skill 目录提升到项目根目录
+- ✅ 简化项目结构，提升可维护性
+- ✅ 优化文档，突出个人使用场景
 
 ### v2.0.0 (2026-03-18)
 - ✅ 使用 `.env` 管理 API Keys，提升安全性
