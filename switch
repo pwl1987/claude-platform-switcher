@@ -1,0 +1,60 @@
+#!/bin/bash
+# Claude Code 平台切换脚本
+
+PLATFORMS_DIR="$HOME/.claude-platforms"
+CURRENT_FILE="$PLATFORMS_DIR/current"
+
+# 显示帮助
+if [ -z "$1" ]; then
+    echo "🔄 Claude Code 平台切换器"
+    echo ""
+    echo "当前平台:"
+    if [ -L "$CURRENT_FILE" ]; then
+        current=$(basename $(readlink "$CURRENT_FILE") .sh | sed 's/config-//')
+        echo "  ✅ $current"
+    else
+        echo "  ❌ 未配置"
+    fi
+    echo ""
+    echo "可用平台:"
+    for config in "$PLATFORMS_DIR"/config-*.sh 2>/dev/null; do
+        if [ -f "$config" ]; then
+            name=$(basename "$config" .sh | sed 's/config-//')
+            echo "  - $name"
+        fi
+    done
+    echo ""
+    echo "用法: switch <平台名>"
+    echo "示例: switch glm"
+    exit 0
+fi
+
+PLATFORM=$1
+CONFIG_FILE="$PLATFORMS_DIR/config-$PLATFORM.sh"
+
+# 检查配置文件是否存在
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "❌ 错误: 平台 '$PLATFORM' 不存在"
+    echo ""
+    echo "可用平台:"
+    for config in "$PLATFORMS_DIR"/config-*.sh 2>/dev/null; do
+        if [ -f "$config" ]; then
+            name=$(basename "$config" .sh | sed 's/config-//')
+            echo "  - $name"
+        fi
+    done
+    exit 1
+fi
+
+# 切换软链接
+ln -sf "$CONFIG_FILE" "$CURRENT_FILE"
+
+echo "✅ 已切换到: $PLATFORM"
+echo ""
+echo "📝 请在当前终端执行以下命令以加载新配置："
+echo ""
+echo "   source ~/.claude-platforms/current"
+echo ""
+echo "然后启动 Claude Code:"
+echo ""
+echo "   claude"
