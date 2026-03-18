@@ -1,5 +1,8 @@
 #!/bin/bash
-# Claude 官方 API - 恢复默认配置
+# Claude 官方配置 - 恢复默认配置
+# 注意：官方 API 需要从 .env 读取 ANTHROPIC_API_KEY（如果使用官方 API）
+
+# 清除所有自定义配置，恢复使用 Claude 官方 API
 unset ANTHROPIC_BASE_URL
 unset ANTHROPIC_API_KEY
 unset ANTHROPIC_AUTH_TOKEN
@@ -9,3 +12,5 @@ unset ANTHROPIC_DEFAULT_SONNET_MODEL
 unset ANTHROPIC_DEFAULT_OPUS_MODEL
 unset API_TIMEOUT_MS
 unset CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC
+
+echo "✅ 已切换到 Claude 官方 API"
