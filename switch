@@ -17,12 +17,11 @@ if [ -z "$1" ]; then
     fi
     echo ""
     echo "可用平台:"
-    for config in "$PLATFORMS_DIR"/config-*.sh 2>/dev/null; do
-        if [ -f "$config" ]; then
-            name=$(basename "$config" .sh | sed 's/config-//')
-            echo "  - $name"
-        fi
-    done
+    for config in "$PLATFORMS_DIR"/config-*.sh; do
+        [ -f "$config" ] || continue
+        name=$(basename "$config" .sh | sed 's/config-//')
+        echo "  - $name"
+    done 2>/dev/null
     echo ""
     echo "用法: switch <平台名>"
     echo "示例: switch glm"
@@ -37,12 +36,11 @@ if [ ! -f "$CONFIG_FILE" ]; then
     echo "❌ 错误: 平台 '$PLATFORM' 不存在"
     echo ""
     echo "可用平台:"
-    for config in "$PLATFORMS_DIR"/config-*.sh 2>/dev/null; do
-        if [ -f "$config" ]; then
-            name=$(basename "$config" .sh | sed 's/config-//')
-            echo "  - $name"
-        fi
-    done
+    for config in "$PLATFORMS_DIR"/config-*.sh; do
+        [ -f "$config" ] || continue
+        name=$(basename "$config" .sh | sed 's/config-//')
+        echo "  - $name"
+    done 2>/dev/null
     exit 1
 fi
 
