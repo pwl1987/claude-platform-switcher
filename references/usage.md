@@ -16,28 +16,36 @@
   ✅ glm
 
 可用平台:
-  - deepseek
-  - glm
-  - minimax
-  - qwen
+  - glm      智谱 GLM（三层模型，性价比高）
+  - minimax  MiniMax（超长上下文，50分钟超时）
+  - deepseek DeepSeek（快速响应）
+  - qwen     通义千问（稳定可靠）
+  - claude   Claude 官方（最新功能）
 ```
 
 ### 2. 切换平台
 
-使用 Skill 切换：
+在 Claude Code 中使用 Skill：
 ```
 切换到智谱 GLM
 ```
 
-或直接使用脚本：
+或使用命令行：
 ```bash
-~/.claude-platforms/.claude/skills/platform-switcher/scripts/switch_and_restart.sh glm
+# 选择平台
+~/.claude-platforms/switch glm
+
+# 加载配置
+source ~/.claude-platforms/config.sh glm
+
+# 启动 Claude Code
+claude
 ```
 
 ### 3. 验证切换
 
 ```bash
-source ~/.claude-platforms/current
+source ~/.claude-platforms/config.sh glm
 echo $ANTHROPIC_BASE_URL
 echo $ANTHROPIC_MODEL
 ```
@@ -46,13 +54,13 @@ echo $ANTHROPIC_MODEL
 
 ## 命令参考
 
-### switch_and_restart.sh
+### config.sh - 统一配置脚本
 
-切换平台并保存上下文。
+所有平台的配置都通过这一个脚本完成。
 
 **用法**：
 ```bash
-switch_and_restart.sh <平台>
+source config.sh <平台>
 ```
 
 **可用平台**：
@@ -65,13 +73,38 @@ switch_and_restart.sh <平台>
 **示例**：
 ```bash
 # 切换到智谱 GLM
-switch_and_restart.sh glm
+source config.sh glm
 
 # 切换到 MiniMax
-switch_and_restart.sh minimax
+source config.sh minimax
 
 # 恢复 Claude 官方
-switch_and_restart.sh claude
+source config.sh claude
+```
+
+**功能**：
+- 自动检查 `.env` 文件是否存在
+- 从 `.env` 加载 API Keys
+- 验证必要的环境变量
+- 设置平台特定的配置
+- 显示配置结果
+
+### switch - 平台切换脚本
+
+记录平台选择并显示下一步操作指引。
+
+**用法**：
+```bash
+switch <平台>
+```
+
+**示例**：
+```bash
+# 切换到智谱 GLM
+switch glm
+
+# 查看当前平台
+switch
 ```
 
 ### save_context.sh
@@ -84,17 +117,32 @@ switch_and_restart.sh claude
 - 工作目录
 - 对话摘要
 
+**用法**：
+```bash
+~/.claude-platforms/scripts/save_context.sh
+```
+
 ### restore_context.sh
 
 恢复会话上下文。
 
 在新会话开始时自动调用，显示上次切换的信息。
 
+**用法**：
+```bash
+~/.claude-platforms/scripts/restore_context.sh
+```
+
 ### get_current_platform.sh
 
 获取当前平台名称。
 
 **输出**：平台名称（如 `glm`、`minimax`）或 `none`
+
+**用法**：
+```bash
+~/.claude-platforms/scripts/get_current_platform.sh
+```
 
 ---
 
@@ -106,7 +154,7 @@ switch_and_restart.sh claude
 
 **解决**：
 ```bash
-source ~/.claude-platforms/current
+source ~/.claude-platforms/config.sh <平台>
 ```
 
 ### Q2: 找不到 switch 命令？
@@ -125,7 +173,18 @@ export PATH="$HOME/.claude-platforms:$PATH"
 source ~/.bashrc
 ```
 
-### Q3: MiniMax 认证失败？
+### Q3: 提示 ".env 文件不存在"？
+
+**解决**：
+```bash
+# 创建 .env 文件
+cp .env.example ~/.claude-platforms/.env
+
+# 编辑并填入 API Keys
+nano ~/.claude-platforms/.env
+```
+
+### Q4: MiniMax 认证失败？
 
 **症状**：API 返回 401 或认证错误
 
@@ -133,14 +192,15 @@ source ~/.bashrc
 
 **解决**：
 ```bash
-# 确认使用 ANTHROPIC_AUTH_TOKEN 而非 ANTHROPIC_API_KEY
-export ANTHROPIC_AUTH_TOKEN="your-minimax-key"
+# 确认 .env 中使用 MINIMAX_AUTH_TOKEN 而非 MINIMAX_API_KEY
+# .env 文件内容：
+MINIMAX_AUTH_TOKEN=your-minimax-key
 
 # 确认 BASE_URL 包含 /anthropic 路径
 export ANTHROPIC_BASE_URL="https://api.minimaxi.com/anthropic"
 ```
 
-### Q4: GLM 模型未找到？
+### Q5: GLM 模型未找到？
 
 **症状**：API 返回模型不存在错误
 
@@ -149,25 +209,32 @@ export ANTHROPIC_BASE_URL="https://api.minimaxi.com/anthropic"
 **解决**：
 ```bash
 # 检查模型变量是否正确
+source ~/.claude-platforms/config.sh glm
 echo $ANTHROPIC_DEFAULT_HAIKU_MODEL   # 应该是 glm-4.5-air
 echo $ANTHROPIC_DEFAULT_SONNET_MODEL  # 应该是 glm-4.7
 echo $ANTHROPIC_DEFAULT_OPUS_MODEL    # 应该是 glm-5
 ```
 
-### Q5: API Key 在哪里配置？
+### Q6: API Key 在哪里配置？
 
-**位置**：`~/.claude-platforms/config-*.sh`
+**位置**：`~/.claude-platforms/.env`
 
 **步骤**：
 ```bash
-# 1. 编辑配置文件
-nano ~/.claude-platforms/config-glm.sh
+# 1. 编辑 .env 文件
+nano ~/.claude-platforms/.env
 
-# 2. 替换 API Key
-export ANTHROPIC_API_KEY="your-actual-api-key-here"
+# 2. 填入 API Keys
+GLM_API_KEY=your-actual-glm-key-here
+MINIMAX_AUTH_TOKEN=your-actual-minimax-key-here
+DEEPSEEK_API_KEY=your-actual-deepseek-key-here
+QWEN_API_KEY=your-actual-qwen-key-here
 
-# 3. 保存并重新加载
-source ~/.claude-platforms/config-glm.sh
+# 3. 设置文件权限
+chmod 600 ~/.claude-platforms/.env
+
+# 4. 重新加载配置
+source ~/.claude-platforms/config.sh glm
 ```
 
 ---
@@ -182,36 +249,43 @@ source ~/.claude-platforms/config-glm.sh
 
 确认显示的平台是否正确。
 
-### 步骤 2：验证配置文件
+### 步骤 2：验证 .env 文件
 
 ```bash
-cat ~/.claude-platforms/config-glm.sh
+# 检查文件是否存在
+ls -la ~/.claude-platforms/.env
+
+# 检查文件权限（应该是 600）
+stat ~/.claude-platforms/.env
+
+# 查看文件内容
+cat ~/.claude-platforms/.env
 ```
 
 确认：
-- BASE_URL 正确
-- API_KEY 已填写
-- 模型名称正确
+- 文件存在
+- 权限正确（600）
+- API Keys 已填写
 
-### 步骤 3：测试环境变量
+### 步骤 3：测试配置脚本
 
 ```bash
-source ~/.claude-platforms/current
+# 测试加载配置
+source ~/.claude-platforms/config.sh glm
+
+# 验证环境变量
 echo "BASE_URL: $ANTHROPIC_BASE_URL"
-echo "API_KEY: ${ANTHROPIC_API_KEY:0:10}..."
 echo "Model: $ANTHROPIC_MODEL"
 ```
 
-### 步骤 4：运行验证脚本
+### 步骤 4：检查网络连接
 
 ```bash
-~/.claude-platforms/verify.sh
-```
-
-### 步骤 5：检查网络连接
-
-```bash
+# 测试智谱 GLM 连接
 curl -I https://open.bigmodel.cn/api/paas/v4
+
+# 测试 MiniMax 连接
+curl -I https://api.minimaxi.com/anthropic
 ```
 
 确认网络可访问。
@@ -226,8 +300,8 @@ curl -I https://open.bigmodel.cn/api/paas/v4
 # 创建智谱 GLM 启动脚本
 cat > ~/claude-glm.sh << 'EOF'
 #!/bin/bash
-~/.claude-platforms/.claude/skills/platform-switcher/scripts/switch_and_restart.sh glm
-source ~/.claude-platforms/current
+~/.claude-platforms/switch glm
+source ~/.claude-platforms/config.sh glm
 claude
 EOF
 
@@ -244,17 +318,31 @@ chmod +x ~/claude-glm.sh
 在 `~/.bashrc` 中添加：
 ```bash
 # Claude Code 平台切换
-alias cc-glm='~/.claude-platforms/switch glm && source ~/.claude-platforms/current && claude'
-alias cc-minimax='~/.claude-platforms/switch minimax && source ~/.claude-platforms/current && claude'
-alias cc-deepseek='~/.claude-platforms/switch deepseek && source ~/.claude-platforms/current && claude'
-alias cc-qwen='~/.claude-platforms/switch qwen && source ~/.claude-platforms/current && claude'
-alias cc-claude='~/.claude-platforms/switch claude && claude'
+alias cc-glm='~/.claude-platforms/switch glm && source ~/.claude-platforms/config.sh glm && claude'
+alias cc-minimax='~/.claude-platforms/switch minimax && source ~/.claude-platforms/config.sh minimax && claude'
+alias cc-deepseek='~/.claude-platforms/switch deepseek && source ~/.claude-platforms/config.sh deepseek && claude'
+alias cc-qwen='~/.claude-platforms/switch qwen && source ~/.claude-platforms/config.sh qwen && claude'
+alias cc-claude='~/.claude-platforms/switch claude && source ~/.claude-platforms/config.sh claude && claude'
 ```
 
 使用：
 ```bash
 cc-glm       # 启动智谱 GLM
 cc-minimax   # 启动 MiniMax
+```
+
+### 使用默认平台
+
+创建一个通用的 `cc` 别名，自动使用上次选择的平台：
+
+```bash
+# 添加到 ~/.bashrc
+alias cc='source ~/.claude-platforms/config.sh $(cat ~/.claude-platforms/.current 2>/dev/null || echo "glm") && claude'
+```
+
+使用：
+```bash
+cc  # 使用上次选择的平台启动
 ```
 
 ---
@@ -270,29 +358,32 @@ cc-minimax   # 启动 MiniMax
 
 ### 2. 安全建议
 
-- 🔒 不要将 `config-*.sh` 提交到 Git
+- 🔒 **不要将 `.env` 提交到 Git**（已在 .gitignore 中）
 - 🔒 定期轮换 API Keys
-- 🔒 设置文件权限：`chmod 600 ~/.claude-platforms/config-*.sh`
+- 🔒 设置文件权限：`chmod 600 ~/.claude-platforms/.env`
 - 🔒 使用环境变量存储 API Keys
 
 ### 3. 配置管理
 
-```bash
-# 使用环境变量管理 API Keys
-export GLM_API_KEY="your-glm-key"
-export MINIMAX_API_KEY="your-minimax-key"
+使用 `.env` 文件集中管理所有 API Keys：
 
-# 在配置文件中引用
-export ANTHROPIC_API_KEY="$GLM_API_KEY"
-export ANTHROPIC_AUTH_TOKEN="$MINIMAX_API_KEY"
+```bash
+# ~/.claude-platforms/.env
+GLM_API_KEY=your-glm-key
+MINIMAX_AUTH_TOKEN=your-minimax-key
+DEEPSEEK_API_KEY=your-deepseek-key
+QWEN_API_KEY=your-qwen-key
 ```
+
+配置脚本会自动从 `.env` 读取对应的 API Key。
 
 ---
 
 ## 相关链接
 
-- GitHub: https://github.com/pwl1987/claude-platform-switcher
-- 智谱 AI: https://open.bigmodel.cn/
-- MiniMax: https://api.minimaxi.com/
-- DeepSeek: https://platform.deepseek.com/
-- 通义千问: https://bailian.console.aliyun.com/
+- **GitHub**: https://github.com/pwl1987/claude-platform-switcher
+- **Claude Code 文档**: https://docs.anthropic.com/claude-code
+- **智谱 AI**: https://open.bigmodel.cn/
+- **MiniMax**: https://api.minimaxi.com/
+- **DeepSeek**: https://platform.deepseek.com/
+- **通义千问**: https://bailian.console.aliyun.com/
