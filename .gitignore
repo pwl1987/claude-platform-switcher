@@ -14,3 +14,6 @@ current
 .idea/
 .vscode/
 *.iml
+
+# 忽略本地配置文件（包含 API Keys）
+config-*.local.sh
