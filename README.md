@@ -12,12 +12,13 @@
 
 ## 🎯 支持的平台
 
-| 平台 | 模型 | 状态 |
-|------|------|------|
-| **MiniMax** | abab6.5s-chat | ✅ |
-| **智谱 GLM** | glm-4-plus | ✅ |
-| **DeepSeek** | deepseek-chat | ✅ |
-| **通义千问** | qwen-plus | ✅ |
+| 平台 | Haiku | Sonnet | Opus | 状态 |
+|------|-------|--------|------|------|
+| **MiniMax** | MiniMax-M2.7 | MiniMax-M2.7 | MiniMax-M2.7 | ✅ |
+| **智谱 GLM** | glm-4.5-air | glm-4.7 | glm-5 | ✅ |
+| **DeepSeek** | deepseek-chat | deepseek-chat | deepseek-chat | ✅ |
+| **通义千问** | qwen-plus | qwen-plus | qwen-plus | ✅ |
+| **Claude 官方** | claude-3-5-haiku | claude-3-5-sonnet | claude-3-5-opus | ✅ |
 
 ## 📦 快速安装
 
@@ -53,10 +54,14 @@ nano ~/.claude-platforms/config-glm.sh
 
 ```bash
 #!/bin/bash
-# 智谱 GLM 配置
+# 智谱 GLM 配置 - 完整版
 export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/paas/v4"
 export ANTHROPIC_API_KEY="your-actual-api-key-here"
-export OPENAI_MODEL="glm-4-plus"
+
+# 模型映射
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-4.7"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5"
 ```
 
 ### 2. 添加快捷命令（可选）
@@ -115,6 +120,9 @@ switch deepseek
 
 # 切换到通义千问
 switch qwen
+
+# 恢复 Claude 官方 API
+switch claude
 ```
 
 ### 5. 启动 Claude Code
@@ -138,7 +146,7 @@ cat > ~/.claude-platforms/config-新平台名.sh << 'EOF'
 # 新平台配置
 export ANTHROPIC_BASE_URL="https://api.example.com/v1"
 export ANTHROPIC_API_KEY="your-api-key-here"
-export OPENAI_MODEL="model-name"
+export ANTHROPIC_MODEL="model-name"
 EOF
 
 chmod +x ~/.claude-platforms/config-新平台名.sh
@@ -163,8 +171,11 @@ switch glm
 source ~/.claude-platforms/current
 
 # 3. 验证环境变量
-echo $ANTHROPIC_BASE_URL
-echo $ANTHROPIC_API_KEY
+echo "BASE_URL: $ANTHROPIC_BASE_URL"
+echo "API_KEY: ${ANTHROPIC_API_KEY:0:10}..."
+echo "Haiku Model: $ANTHROPIC_DEFAULT_HAIKU_MODEL"
+echo "Sonnet Model: $ANTHROPIC_DEFAULT_SONNET_MODEL"
+echo "Opus Model: $ANTHROPIC_DEFAULT_OPUS_MODEL"
 
 # 4. 启动 Claude Code
 claude
@@ -182,6 +193,7 @@ claude
 ├── config-glm.sh       # 智谱 GLM 配置
 ├── config-qwen.sh      # 通义千问配置
 ├── config-deepseek.sh  # DeepSeek 配置
+├── config-claude.sh    # Claude 官方配置（恢复默认）
 ├── current             # 当前平台软链接
 ├── install.sh          # 一键安装脚本
 ├── README.md           # 说明文档
@@ -222,7 +234,24 @@ MIT License
 - [DeepSeek 开放平台](https://platform.deepseek.com/)
 - [阿里云百炼平台](https://bailian.console.aliyun.com/)
 
+## 📋 平台配置差异
+
+| 平台 | 认证变量 | BASE_URL 路径 | 模型映射 | 超时设置 |
+|------|---------|--------------|---------|---------|
+| **MiniMax** | `ANTHROPIC_AUTH_TOKEN` | `/anthropic` | M2.7 (全系列) | 3000000ms |
+| **智谱 GLM** | `ANTHROPIC_API_KEY` | `/api/paas/v4` | 4.5-air/4.7/5 | 默认 |
+| **DeepSeek** | `ANTHROPIC_API_KEY` | - | deepseek-chat | 默认 |
+| **通义千问** | `ANTHROPIC_API_KEY` | `/compatible-mode/v1` | qwen-plus | 默认 |
+| **Claude 官方** | - | - | - | - |
+
 ## 📝 更新日志
+
+### v1.1.0 (2026-03-18)
+- ✅ 优化 MiniMax 配置：使用 `/anthropic` 路径和 `ANTHROPIC_AUTH_TOKEN`
+- ✅ 添加完整模型映射支持（Haiku/Sonnet/Opus）
+- ✅ 添加智谱 GLM 三层模型映射（4.5-air/4.7/5）
+- ✅ 添加 Claude 官方配置恢复功能（`switch claude`）
+- ✅ 添加超时优化和性能调优选项
 
 ### v1.0.0 (2026-03-18)
 - ✅ 初始版本发布

@@ -50,6 +50,8 @@ switch
 # 切换平台
 switch <平台名>
 
+# 可用平台: glm, minimax, deepseek, qwen, claude
+
 # 启动 Claude Code（需先 source 配置）
 cc
 ```
@@ -68,7 +70,28 @@ cc
 
 **解决**：检查 API Key 是否正确，检查网络连接。
 
+### 问题：MiniMax 认证失败
+
+**解决**：确认使用 `ANTHROPIC_AUTH_TOKEN` 而非 `ANTHROPIC_API_KEY`，BASE_URL 应为 `/anthropic` 路径。
+
+### 问题：GLM 模型未找到
+
+**解决**：确认使用正确的模型变量：
+- Haiku: `ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"`
+- Sonnet: `ANTHROPIC_DEFAULT_SONNET_MODEL="glm-4.7"`
+- Opus: `ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5"`
+
 ## 📚 更多信息
 
 - 完整文档：[README.md](https://github.com/pwl1987/claude-platform-switcher/blob/master/README.md)
 - 提交问题：[GitHub Issues](https://github.com/pwl1987/claude-platform-switcher/issues)
+
+## 🔑 平台配置差异速查
+
+| 平台 | 认证变量 | BASE_URL 路径 | 模型配置 |
+|------|---------|--------------|---------|
+| MiniMax | `ANTHROPIC_AUTH_TOKEN` | `/anthropic` | 全部使用 `MiniMax-M2.7` |
+| 智谱 GLM | `ANTHROPIC_API_KEY` | `/api/paas/v4` | 三层模型映射 |
+| DeepSeek | `ANTHROPIC_API_KEY` | - | `deepseek-chat` |
+| 通义千问 | `ANTHROPIC_API_KEY` | `/compatible-mode/v1` | `qwen-plus` |
+| Claude 官方 | - | - | 自动使用官方模型 |
