@@ -397,8 +397,8 @@ claude
 # 智谱 GLM
 GLM_API_KEY=your-glm-api-key-here
 
-# MiniMax (注意：使用 AUTH_TOKEN)
-MINIMAX_AUTH_TOKEN=your-minimax-api-key-here
+# MiniMax
+MINIMAX_API_KEY=your-minimax-api-key-here
 
 # DeepSeek
 DEEPSEEK_API_KEY=your-deepseek-api-key-here

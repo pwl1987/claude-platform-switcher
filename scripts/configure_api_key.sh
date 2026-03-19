@@ -18,7 +18,7 @@ NC='\033[0m'
 # API Key 变量名映射
 declare -A API_KEY_VARS=(
     ["glm"]="GLM_API_KEY"
-    ["minimax"]="MINIMAX_AUTH_TOKEN"
+    ["minimax"]="MINIMAX_API_KEY"
     ["deepseek"]="DEEPSEEK_API_KEY"
     ["qwen"]="QWEN_API_KEY"
     ["claude"]="ANTHROPIC_API_KEY"
@@ -27,7 +27,7 @@ declare -A API_KEY_VARS=(
 # API Key 名称映射
 declare -A API_KEY_NAMES=(
     ["glm"]="智谱 GLM API Key"
-    ["minimax"]="MiniMax Auth Token"
+    ["minimax"]="MiniMax API Key"
     ["deepseek"]="DeepSeek API Key"
     ["qwen"]="通义千问 API Key"
     ["claude"]="Claude API Key"
@@ -41,14 +41,14 @@ show_help() {
     echo ""
     echo "支持的平台:"
     echo "  glm      - 智谱 GLM (变量: GLM_API_KEY)"
-    echo "  minimax  - MiniMax (变量: MINIMAX_AUTH_TOKEN)"
+    echo "  minimax  - MiniMax (变量: MINIMAX_API_KEY)"
     echo "  deepseek - DeepSeek (变量: DEEPSEEK_API_KEY)"
     echo "  qwen     - 通义千问 (变量: QWEN_API_KEY)"
     echo "  claude   - Claude 官方 (变量: ANTHROPIC_API_KEY)"
     echo ""
     echo "示例:"
     echo "  configure_api_key.sh glm sk-xxxxxxxx"
-    echo "  configure_api_key.sh minimax eyJhbGciOi..."
+    echo "  configure_api_key.sh minimax sk-xxxxxxxx"
     echo ""
     echo "查看当前配置:"
     echo "  configure_api_key.sh show"

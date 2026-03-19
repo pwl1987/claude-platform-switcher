@@ -6,53 +6,11 @@
 
 | 平台 | 命令 | 斜杠命令 | BASE_URL | 认证方式 | 适用场景 |
 |------|------|----------|----------|----------|----------|
-| **智谱 GLM** | `glm` | `/sw:glm` | `https://open.bigmodel.cn/api/anthropic` | `API_KEY` | 日常开发、成本优化 |
+| **智谱 GLM** | `glm` | `/sw:glm` | `https://open.bigmodel.cn/api/anthropic` | `AUTH_TOKEN` | 日常开发、成本优化 |
 | **MiniMax** | `minimax` | `/sw:minimax` | `https://api.minimaxi.com/anthropic` | `AUTH_TOKEN` | 复杂任务、长时间会话 |
 | **DeepSeek** | `deepseek` | `/sw:deepseek` | `https://api.deepseek.com` | `API_KEY` | 快速查询、简单任务 |
 | **通义千问** | `qwen` | `/sw:qwen` | `https://dashscope.aliyuncs.com/compatible-mode/v1` | `API_KEY` | 企业应用、稳定可靠 |
 | **Claude 官方** | `claude` | `/sw:claude` | 默认 | 默认 | 生产环境、最新功能 |
-
----
-
-## MiniMax
-
-### 基本信息
-- **命令**: `minimax`
-- **BASE_URL**: `https://api.minimaxi.com/anthropic`
-- **环境变量**: `MINIMAX_AUTH_TOKEN`（注意：不同于其他平台的 API_KEY）
-- **适用场景**: 复杂任务、长时间会话
-
-### 使用方式
-```bash
-# 选择平台
-~/.claude-platforms/switch minimax
-
-# 加载配置
-source ~/.claude-platforms/config.sh minimax
-```
-
-### 环境变量配置
-```bash
-export ANTHROPIC_BASE_URL="https://api.minimaxi.com/anthropic"
-export ANTHROPIC_AUTH_TOKEN="$MINIMAX_AUTH_TOKEN"
-export API_TIMEOUT_MS="3000000"  # 50分钟超时
-export ANTHROPIC_MODEL="MiniMax-M2.7"
-```
-
-### 特色配置
-- **超时时间**: 3000000ms (50分钟) - 适合超长上下文任务
-- **路径**: `/anthropic` - 专用的 Anthropic 兼容端点
-
-### .env 配置
-```bash
-MINIMAX_AUTH_TOKEN=your-minimax-api-key-here
-```
-
-### 使用建议
-- ✅ 复杂编程任务
-- ✅ 长时间会话
-- ✅ 大文件分析
-- ❌ 快速查询（用 DeepSeek 更快）
 
 ---
 
@@ -61,7 +19,7 @@ MINIMAX_AUTH_TOKEN=your-minimax-api-key-here
 ### 基本信息
 - **命令**: `glm`
 - **BASE_URL**: `https://open.bigmodel.cn/api/anthropic`
-- **环境变量**: `GLM_API_KEY`
+- **环境变量**: `ANTHROPIC_AUTH_TOKEN`（.env 中使用 `GLM_API_KEY`）
 - **适用场景**: 日常使用、平衡性能
 
 ### 使用方式
@@ -73,26 +31,23 @@ MINIMAX_AUTH_TOKEN=your-minimax-api-key-here
 source ~/.claude-platforms/config.sh glm
 ```
 
-### 环境变量配置（三层模型映射）
+### 环境变量配置（官网示例）
 ```bash
+export ANTHROPIC_AUTH_TOKEN="$GLM_API_KEY"
 export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
-export ANTHROPIC_API_KEY="$GLM_API_KEY"
+export API_TIMEOUT_MS="3000000"
+export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC="1"
+```
 
-# 三层模型映射
-export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"  # 快速任务
-export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-4.7"     # 日常使用
-export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5"         # 复杂任务
+### .env 配置
+```bash
+GLM_API_KEY=your-glm-api-key-here
 ```
 
 ### 模型说明
 - **glm-4.5-air (Haiku)**: 轻量快速，适合简单查询
 - **glm-4.7 (Sonnet)**: 日常使用的平衡选择
 - **glm-5 (Opus)**: 最强模型，适合复杂任务
-
-### .env 配置
-```bash
-GLM_API_KEY=your-glm-api-key-here
-```
 
 ### 使用建议
 - ✅ 日常开发
@@ -102,12 +57,60 @@ GLM_API_KEY=your-glm-api-key-here
 
 ---
 
+## MiniMax
+
+### 基本信息
+- **命令**: `minimax`
+- **BASE_URL**: `https://api.minimaxi.com/anthropic`
+- **环境变量**: `ANTHROPIC_AUTH_TOKEN`（.env 中使用 `MINIMAX_API_KEY`）
+- **适用场景**: 复杂任务、长时间会话
+
+### 使用方式
+```bash
+# 选择平台
+~/.claude-platforms/switch minimax
+
+# 加载配置
+source ~/.claude-platforms/config.sh minimax
+```
+
+### 环境变量配置（官网示例）
+```bash
+export ANTHROPIC_AUTH_TOKEN="$MINIMAX_API_KEY"
+export ANTHROPIC_BASE_URL="https://api.minimaxi.com/anthropic"
+export API_TIMEOUT_MS="3000000"
+export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC="1"
+export ANTHROPIC_MODEL="MiniMax-M2.7"
+export ANTHROPIC_SMALL_FAST_MODEL="MiniMax-M2.7"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="MiniMax-M2.7"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="MiniMax-M2.7"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="MiniMax-M2.7"
+```
+
+### 特色配置
+- **超时时间**: 3000000ms (50分钟) - 适合超长上下文任务
+- **路径**: `/anthropic` - 专用的 Anthropic 兼容端点
+- **统一模型**: 所有层级统一使用 MiniMax-M2.7
+
+### .env 配置
+```bash
+MINIMAX_API_KEY=your-minimax-api-key-here
+```
+
+### 使用建议
+- ✅ 复杂编程任务
+- ✅ 长时间会话
+- ✅ 大文件分析
+- ❌ 快速查询（用 DeepSeek 更快）
+
+---
+
 ## DeepSeek
 
 ### 基本信息
 - **命令**: `deepseek`
 - **BASE_URL**: `https://api.deepseek.com`
-- **环境变量**: `DEEPSEEK_API_KEY`
+- **环境变量**: `ANTHROPIC_API_KEY`（.env 中使用 `DEEPSEEK_API_KEY`）
 - **适用场景**: 快速响应、简单任务
 
 ### 使用方式
@@ -149,7 +152,7 @@ DEEPSEEK_API_KEY=your-deepseek-api-key-here
 ### 基本信息
 - **命令**: `qwen`
 - **BASE_URL**: `https://dashscope.aliyuncs.com/compatible-mode/v1`
-- **环境变量**: `QWEN_API_KEY`
+- **环境变量**: `ANTHROPIC_API_KEY`（.env 中使用 `QWEN_API_KEY`）
 - **适用场景**: 企业应用、稳定可靠
 
 ### 使用方式
@@ -269,16 +272,16 @@ ANTHROPIC_API_KEY=sk-ant-xxxxx
 # 注意：不要将此文件提交到 Git
 
 # 智谱 GLM
-GLM_API_KEY=1234567890abcdef
+GLM_API_KEY=your-glm-api-key-here
 
-# MiniMax (注意：使用 AUTH_TOKEN)
-MINIMAX_AUTH_TOKEN=9876543210fedcba
+# MiniMax
+MINIMAX_API_KEY=your-minimax-api-key-here
 
 # DeepSeek
-DEEPSEEK_API_KEY=abcdefghijklmnopqrstuvwx
+DEEPSEEK_API_KEY=your-deepseek-api-key-here
 
 # 通义千问
-QWEN_API_KEY=zyxwvutsrqponmlkji
+QWEN_API_KEY=your-qwen-api-key-here
 
 # Claude 官方（可选）
 # ANTHROPIC_API_KEY=sk-ant-xxxxx
@@ -295,7 +298,7 @@ source ~/.claude-platforms/config.sh glm
 
 # 3. 验证配置
 echo $ANTHROPIC_BASE_URL
-echo $ANTHROPIC_MODEL
+echo $ANTHROPIC_AUTH_TOKEN
 
 # 4. 启动 Claude Code
 claude
@@ -314,7 +317,7 @@ claude
 ### MiniMax
 访问：https://api.minimaxi.com/
 1. 注册/登录账号
-2. 获取 AUTH_TOKEN（注意不是 API_KEY）
+2. 获取 API Key
 
 ### DeepSeek
 访问：https://platform.deepseek.com/

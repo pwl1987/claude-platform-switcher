@@ -275,7 +275,7 @@ Configure API keys for AI platforms directly in Claude Code.
 | Platform | Variable | Description |
 |----------|----------|-------------|
 | glm | GLM_API_KEY | 智谱 GLM |
-| minimax | MINIMAX_AUTH_TOKEN | MiniMax |
+| minimax | MINIMAX_API_KEY | MiniMax |
 | deepseek | DEEPSEEK_API_KEY | DeepSeek |
 | qwen | QWEN_API_KEY | 通义千问 |
 | claude | ANTHROPIC_API_KEY | Claude 官方 |
@@ -324,7 +324,7 @@ EOF
     # 为每个平台创建独立的配置 skill
     local platforms=("glm" "minimax" "deepseek" "qwen" "claude")
     local names=("智谱 GLM" "MiniMax" "DeepSeek" "通义千问" "Claude 官方")
-    local vars=("GLM_API_KEY" "MINIMAX_AUTH_TOKEN" "DEEPSEEK_API_KEY" "QWEN_API_KEY" "ANTHROPIC_API_KEY")
+    local vars=("GLM_API_KEY" "MINIMAX_API_KEY" "DEEPSEEK_API_KEY" "QWEN_API_KEY" "ANTHROPIC_API_KEY")
 
     for i in "${!platforms[@]}"; do
         local platform="${platforms[$i]}"

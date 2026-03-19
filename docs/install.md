@@ -111,8 +111,8 @@ nano ~/.claude-platforms/.env
 # 智谱 GLM
 GLM_API_KEY=your-actual-glm-key-here
 
-# MiniMax (注意：使用 AUTH_TOKEN)
-MINIMAX_AUTH_TOKEN=your-actual-minimax-key-here
+# MiniMax
+MINIMAX_API_KEY=your-actual-minimax-key-here
 
 # DeepSeek
 DEEPSEEK_API_KEY=your-actual-deepseek-key-here

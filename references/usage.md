@@ -222,9 +222,9 @@ nano ~/.claude-platforms/.env
 
 **解决**：
 ```bash
-# 确认 .env 中使用 MINIMAX_AUTH_TOKEN 而非 MINIMAX_API_KEY
+# 确认 .env 中使用 MINIMAX_API_KEY
 # .env 文件内容：
-MINIMAX_AUTH_TOKEN=your-minimax-key
+MINIMAX_API_KEY=your-minimax-key
 
 # 确认 BASE_URL 包含 /anthropic 路径
 export ANTHROPIC_BASE_URL="https://api.minimaxi.com/anthropic"
@@ -256,7 +256,7 @@ nano ~/.claude-platforms/.env
 
 # 2. 填入 API Keys
 GLM_API_KEY=your-actual-glm-key-here
-MINIMAX_AUTH_TOKEN=your-actual-minimax-key-here
+MINIMAX_API_KEY=your-actual-minimax-key-here
 DEEPSEEK_API_KEY=your-actual-deepseek-key-here
 QWEN_API_KEY=your-actual-qwen-key-here
 
@@ -400,7 +400,7 @@ cc  # 使用上次选择的平台启动
 ```bash
 # ~/.claude-platforms/.env
 GLM_API_KEY=your-glm-key
-MINIMAX_AUTH_TOKEN=your-minimax-key
+MINIMAX_API_KEY=your-minimax-key
 DEEPSEEK_API_KEY=your-deepseek-key
 QWEN_API_KEY=your-qwen-key
 ```

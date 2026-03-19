@@ -81,8 +81,8 @@ nano ~/.claude-platforms/.env
 # 智谱 GLM
 GLM_API_KEY=your-actual-glm-key-here
 
-# MiniMax (注意：使用 AUTH_TOKEN)
-MINIMAX_AUTH_TOKEN=your-actual-minimax-key-here
+# MiniMax
+MINIMAX_API_KEY=your-actual-minimax-key-here
 
 # DeepSeek
 DEEPSEEK_API_KEY=your-actual-deepseek-key-here
@@ -291,8 +291,10 @@ source ~/.claude-platforms/config.sh glm
 
 配置：
 ```bash
+export ANTHROPIC_AUTH_TOKEN="$GLM_API_KEY"
 export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
-export ANTHROPIC_API_KEY="$GLM_API_KEY"
+export API_TIMEOUT_MS="3000000"
+export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC="1"
 
 # 三层模型映射
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"
@@ -308,9 +310,10 @@ source ~/.claude-platforms/config.sh minimax
 
 配置：
 ```bash
+export ANTHROPIC_AUTH_TOKEN="$MINIMAX_API_KEY"
 export ANTHROPIC_BASE_URL="https://api.minimaxi.com/anthropic"
-export ANTHROPIC_AUTH_TOKEN="$MINIMAX_AUTH_TOKEN"
 export API_TIMEOUT_MS="3000000"
+export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC="1"
 
 # 统一模型
 export ANTHROPIC_MODEL="MiniMax-M2.7"

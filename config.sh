@@ -33,8 +33,10 @@ config_glm() {
         exit 1
     fi
 
+    export ANTHROPIC_AUTH_TOKEN="$GLM_API_KEY"
     export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
-    export ANTHROPIC_API_KEY="$GLM_API_KEY"
+    export API_TIMEOUT_MS="3000000"
+    export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC="1"
 
     # 模型映射
     export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"
@@ -48,13 +50,13 @@ config_glm() {
 
 # 配置 MiniMax
 config_minimax() {
-    if [ -z "$MINIMAX_AUTH_TOKEN" ]; then
-        echo -e "${RED}❌ 错误: MINIMAX_AUTH_TOKEN 未在 .env 中设置${NC}"
+    if [ -z "$MINIMAX_API_KEY" ]; then
+        echo -e "${RED}❌ 错误: MINIMAX_API_KEY 未在 .env 中设置${NC}"
         exit 1
     fi
 
+    export ANTHROPIC_AUTH_TOKEN="$MINIMAX_API_KEY"
     export ANTHROPIC_BASE_URL="https://api.minimaxi.com/anthropic"
-    export ANTHROPIC_AUTH_TOKEN="$MINIMAX_AUTH_TOKEN"
     export API_TIMEOUT_MS="3000000"
     export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC="1"
 

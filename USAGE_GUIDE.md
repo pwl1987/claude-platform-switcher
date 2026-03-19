@@ -10,7 +10,7 @@ nano ~/.claude-platforms/.env
 
 # 填入你的 API Keys
 GLM_API_KEY=your-actual-glm-key
-MINIMAX_AUTH_TOKEN=your-actual-minimax-key
+MINIMAX_API_KEY=your-actual-minimax-key
 DEEPSEEK_API_KEY=your-actual-deepseek-key
 QWEN_API_KEY=your-actual-qwen-key
 ```

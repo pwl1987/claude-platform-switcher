@@ -11,8 +11,10 @@
 ```json
 {
   "env": {
+    "ANTHROPIC_AUTH_TOKEN": "your_zhipu_api_key",
     "ANTHROPIC_BASE_URL": "https://open.bigmodel.cn/api/anthropic",
-    "ANTHROPIC_API_KEY": "你的GLM_API_KEY",
+    "API_TIMEOUT_MS": "3000000",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": 1,
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "glm-4.5-air",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-4.7",
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-5"
@@ -37,10 +39,9 @@
 {
   "env": {
     "ANTHROPIC_BASE_URL": "https://api.minimaxi.com/anthropic",
-    "ANTHROPIC_AUTH_TOKEN": "你的MINIMAX_AUTH_TOKEN",
-    "ANTHROPIC_API_KEY": "你的MINIMAX_API_KEY",
+    "ANTHROPIC_AUTH_TOKEN": "your_minimax_api_key",
     "API_TIMEOUT_MS": "3000000",
-    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": 1,
     "ANTHROPIC_MODEL": "MiniMax-M2.7",
     "ANTHROPIC_SMALL_FAST_MODEL": "MiniMax-M2.7",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "MiniMax-M2.7",
@@ -65,7 +66,7 @@
 {
   "env": {
     "ANTHROPIC_BASE_URL": "https://api.deepseek.com",
-    "ANTHROPIC_API_KEY": "你的DEEPSEEK_API_KEY",
+    "ANTHROPIC_API_KEY": "your_deepseek_api_key",
     "ANTHROPIC_MODEL": "deepseek-chat",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-chat",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "deepseek-chat",
@@ -88,7 +89,7 @@
 {
   "env": {
     "ANTHROPIC_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-    "ANTHROPIC_API_KEY": "你的QWEN_API_KEY",
+    "ANTHROPIC_API_KEY": "your_qwen_api_key",
     "ANTHROPIC_MODEL": "qwen-plus",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "qwen-turbo",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "qwen-plus",
@@ -150,7 +151,7 @@
 
 | 平台 | Haiku | Sonnet | Opus | 超时 | 特点 |
 |------|-------|--------|------|------|------|
-| **GLM** | glm-4.5-air | glm-4.7 | glm-5 | 默认 | 三层映射，性价比 |
+| **GLM** | glm-4.5-air | glm-4.7 | glm-5 | 50min | 三层映射，性价比 |
 | **MiniMax** | M2.7 | M2.7 | M2.7 | 50min | 超长上下文 |
 | **DeepSeek** | chat | chat | chat | 默认 | 快速响应 |
 | **Qwen** | turbo | plus | max | 默认 | 稳定可靠 |
