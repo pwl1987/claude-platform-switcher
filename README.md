@@ -510,6 +510,11 @@ claude-platform-switcher/
 
 ## 📝 更新日志
 
+### v3.2.0 (2026-03-19)
+- ✅ 新增 `docs/install.md` - AI Agent 自动安装指南
+- ✅ 新增 `docs/update.md` - AI Agent 自动升级指南（保留配置）
+- ✅ 安装和升级文档分离，用户体验更清晰
+
 ### v3.1.0 (2026-03-19)
 - ✅ 新增一键安装/升级脚本 `install.sh`
 - ✅ 支持从 GitHub 直接安装
