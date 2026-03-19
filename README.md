@@ -8,9 +8,55 @@
 
 ---
 
+## 🤖 AI 自动安装（推荐）
+
+只需对 Claude Code 说一句话：
+
+```
+帮我安装 Claude Code 平台切换器：https://raw.githubusercontent.com/pwl1987/claude-platform-switcher/main/docs/install.md
+```
+
+升级（保留配置）：
+
+```
+帮我升级 Claude Code 平台切换器：https://raw.githubusercontent.com/pwl1987/claude-platform-switcher/main/docs/update.md
+```
+
+---
+
+## 🚀 一键安装
+
+### 新安装
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/pwl1987/claude-platform-switcher/main/install.sh | bash
+```
+
+### 升级（保留配置）
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/pwl1987/claude-platform-switcher/main/install.sh | bash -s -- --upgrade
+```
+
+### 强制重新安装
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/pwl1987/claude-platform-switcher/main/install.sh | bash -s -- --force
+```
+
+---
+
 ## ⚡ 5 秒快速上手
 
 ### 1. 安装
+
+**方式 A: 一键安装（推荐）**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/pwl1987/claude-platform-switcher/main/install.sh | bash
+```
+
+**方式 B: 手动安装**
 
 ```bash
 git clone https://github.com/pwl1987/claude-platform-switcher.git
@@ -82,7 +128,27 @@ claude
 
 ## 🚀 使用方法
 
-### 方式 1：使用 Skill（推荐）
+### 方式 1：快速切换（推荐）
+
+使用一键切换脚本：
+
+```bash
+~/.claude-platforms/quick-switch.sh glm
+```
+
+这个脚本会自动完成：
+1. ✅ 切换平台
+2. ✅ 加载配置
+3. ✅ 保存上下文
+4. ✅ 显示重启指导
+
+然后只需：
+```bash
+# 1. 按 Ctrl+D 退出当前 Claude Code 会话
+# 2. 执行: claude
+```
+
+### 方式 2：使用 Skill（自然语言）
 
 在 Claude Code 中直接说：
 
@@ -98,7 +164,7 @@ claude
 这个任务用哪个平台比较好？
 ```
 
-### 方式 2：命令行切换
+### 方式 3：命令行切换（手动）
 
 ```bash
 # 切换平台
@@ -111,7 +177,7 @@ source ~/.claude-platforms/config.sh glm
 claude
 ```
 
-### 方式 3：快捷命令
+### 方式 4：快捷命令
 
 在 `~/.bashrc` 中添加：
 
@@ -198,7 +264,7 @@ source ~/.claude-platforms/config.sh glm
 
 配置：
 ```bash
-export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/paas/v4"
+export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
 export ANTHROPIC_API_KEY="$GLM_API_KEY"
 
 # 三层模型映射
@@ -443,6 +509,12 @@ claude-platform-switcher/
 ---
 
 ## 📝 更新日志
+
+### v3.1.0 (2026-03-19)
+- ✅ 新增一键安装/升级脚本 `install.sh`
+- ✅ 支持从 GitHub 直接安装
+- ✅ 升级时自动保留 `.env` 配置
+- ✅ 添加版本号文件 `VERSION`
 
 ### v3.0.0 (2026-03-18)
 - ✅ 合并平台配置脚本为单一的 config.sh
