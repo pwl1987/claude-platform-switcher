@@ -6,7 +6,7 @@
 
 | 平台 | 命令 | BASE_URL | 认证方式 | 适用场景 |
 |------|------|----------|----------|----------|
-| **智谱 GLM** | `glm` | `https://open.bigmodel.cn/api/paas/v4` | `API_KEY` | 日常开发、成本优化 |
+| **智谱 GLM** | `glm` | `https://open.bigmodel.cn/api/anthropic` | `API_KEY` | 日常开发、成本优化 |
 | **MiniMax** | `minimax` | `https://api.minimaxi.com/anthropic` | `AUTH_TOKEN` | 复杂任务、长时间会话 |
 | **DeepSeek** | `deepseek` | `https://api.deepseek.com` | `API_KEY` | 快速查询、简单任务 |
 | **通义千问** | `qwen` | `https://dashscope.aliyuncs.com/compatible-mode/v1` | `API_KEY` | 企业应用、稳定可靠 |
@@ -60,7 +60,7 @@ MINIMAX_AUTH_TOKEN=your-minimax-api-key-here
 
 ### 基本信息
 - **命令**: `glm`
-- **BASE_URL**: `https://open.bigmodel.cn/api/paas/v4`
+- **BASE_URL**: `https://open.bigmodel.cn/api/anthropic`
 - **环境变量**: `GLM_API_KEY`
 - **适用场景**: 日常使用、平衡性能
 
@@ -75,7 +75,7 @@ source ~/.claude-platforms/config.sh glm
 
 ### 环境变量配置（三层模型映射）
 ```bash
-export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/paas/v4"
+export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
 export ANTHROPIC_API_KEY="$GLM_API_KEY"
 
 # 三层模型映射

@@ -37,6 +37,26 @@ Platform Switcher 是一个 Claude Code 技能，用于在不同的 AI 平台之
 
 ## 使用流程
 
+### 快速切换（推荐）
+
+使用一键切换脚本：
+
+```bash
+~/.claude-platforms/quick-switch.sh <平台>
+```
+
+这个脚本会自动完成：
+1. ✅ 切换平台
+2. ✅ 加载配置
+3. ✅ 保存上下文
+4. ✅ 显示重启指导
+
+然后只需：
+```bash
+# 1. 按 Ctrl+D 退出当前 Claude Code 会话
+# 2. 执行: claude
+```
+
 ### 步骤 1：确认目标平台
 
 根据用户请求确定目标平台。如果用户没有明确指定，根据任务特点推荐最合适的平台。
@@ -48,7 +68,7 @@ Platform Switcher 是一个 Claude Code 技能，用于在不同的 AI 平台之
 - 企业环境、稳定性要求 → **通义千问**
 - 重要任务、质量优先 → **Claude 官方**
 
-### 步骤 2：执行切换脚本
+### 步骤 2：执行切换脚本（手动模式）
 
 使用 `switch` 脚本切换平台：
 
@@ -65,7 +85,7 @@ Platform Switcher 是一个 Claude Code 技能，用于在不同的 AI 平台之
 ~/.claude-platforms/switch minimax
 ```
 
-### 步骤 3：加载配置
+### 步骤 3：加载配置（手动模式）
 
 切换后，需要在当前终端加载新的平台配置：
 
@@ -78,7 +98,7 @@ source ~/.claude-platforms/config.sh <平台>
 source ~/.claude-platforms/config.sh glm
 ```
 
-### 步骤 4：重启 Claude Code
+### 步骤 4：重启 Claude Code（手动模式）
 
 加载配置后，重启 Claude Code 以使配置生效：
 

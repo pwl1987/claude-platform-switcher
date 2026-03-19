@@ -33,7 +33,7 @@ config_glm() {
         exit 1
     fi
 
-    export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/paas/v4"
+    export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
     export ANTHROPIC_API_KEY="$GLM_API_KEY"
 
     # 模型映射
@@ -56,14 +56,19 @@ config_minimax() {
     export ANTHROPIC_BASE_URL="https://api.minimaxi.com/anthropic"
     export ANTHROPIC_AUTH_TOKEN="$MINIMAX_AUTH_TOKEN"
     export API_TIMEOUT_MS="3000000"
+    export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC="1"
 
-    # 统一模型
+    # 统一模型映射（所有层级都是 M2.7）
     export ANTHROPIC_MODEL="MiniMax-M2.7"
+    export ANTHROPIC_SMALL_FAST_MODEL="MiniMax-M2.7"
+    export ANTHROPIC_DEFAULT_HAIKU_MODEL="MiniMax-M2.7"
+    export ANTHROPIC_DEFAULT_SONNET_MODEL="MiniMax-M2.7"
+    export ANTHROPIC_DEFAULT_OPUS_MODEL="MiniMax-M2.7"
 
     echo -e "${GREEN}✅ 已切换到 MiniMax${NC}"
     echo "   基础 URL: $ANTHROPIC_BASE_URL"
     echo "   模型: $ANTHROPIC_MODEL"
-    echo "   超时: $API_TIMEOUT_MS ms"
+    echo "   超时: $API_TIMEOUT_MS ms (50分钟)"
 }
 
 # 配置 DeepSeek
@@ -75,7 +80,13 @@ config_deepseek() {
 
     export ANTHROPIC_BASE_URL="https://api.deepseek.com"
     export ANTHROPIC_API_KEY="$DEEPSEEK_API_KEY"
+
+    # 模型映射（统一使用 deepseek-chat）
     export ANTHROPIC_MODEL="deepseek-chat"
+    export ANTHROPIC_SMALL_FAST_MODEL="deepseek-chat"
+    export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-chat"
+    export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-chat"
+    export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-chat"
 
     echo -e "${GREEN}✅ 已切换到 DeepSeek${NC}"
     echo "   基础 URL: $ANTHROPIC_BASE_URL"
@@ -91,28 +102,42 @@ config_qwen() {
 
     export ANTHROPIC_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"
     export ANTHROPIC_API_KEY="$QWEN_API_KEY"
+
+    # 三层模型映射
     export ANTHROPIC_MODEL="qwen-plus"
+    export ANTHROPIC_SMALL_FAST_MODEL="qwen-turbo"
+    export ANTHROPIC_DEFAULT_HAIKU_MODEL="qwen-turbo"
+    export ANTHROPIC_DEFAULT_SONNET_MODEL="qwen-plus"
+    export ANTHROPIC_DEFAULT_OPUS_MODEL="qwen-max"
 
     echo -e "${GREEN}✅ 已切换到通义千问${NC}"
     echo "   基础 URL: $ANTHROPIC_BASE_URL"
-    echo "   模型: $ANTHROPIC_MODEL"
+    echo "   模型: Haiku=qwen-turbo, Sonnet=qwen-plus, Opus=qwen-max"
 }
 
 # 配置 Claude 官方（恢复默认）
 config_claude() {
     # 清除所有自定义配置
     unset ANTHROPIC_BASE_URL
-    unset ANTHROPIC_API_KEY
     unset ANTHROPIC_AUTH_TOKEN
+    unset ANTHROPIC_API_KEY
     unset ANTHROPIC_MODEL
+    unset ANTHROPIC_SMALL_FAST_MODEL
     unset ANTHROPIC_DEFAULT_HAIKU_MODEL
     unset ANTHROPIC_DEFAULT_SONNET_MODEL
     unset ANTHROPIC_DEFAULT_OPUS_MODEL
     unset API_TIMEOUT_MS
     unset CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC
 
+    # 显式设置官方模型（可选，但更清晰）
+    export ANTHROPIC_BASE_URL="https://api.anthropic.com"
+    export ANTHROPIC_DEFAULT_HAIKU_MODEL="claude-haiku-4-5-20250731"
+    export ANTHROPIC_DEFAULT_SONNET_MODEL="claude-sonnet-4-6-20250514"
+    export ANTHROPIC_DEFAULT_OPUS_MODEL="claude-opus-4-6-20250514"
+
     echo -e "${GREEN}✅ 已切换到 Claude 官方 API${NC}"
-    echo "   使用默认配置"
+    echo "   基础 URL: $ANTHROPIC_BASE_URL"
+    echo "   模型: Haiku=claude-haiku-4.5, Sonnet=claude-sonnet-4.6, Opus=claude-opus-4.6"
 }
 
 # 显示使用帮助

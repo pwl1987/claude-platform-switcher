@@ -282,7 +282,7 @@ echo "Model: $ANTHROPIC_MODEL"
 
 ```bash
 # 测试智谱 GLM 连接
-curl -I https://open.bigmodel.cn/api/paas/v4
+curl -I https://open.bigmodel.cn/api/anthropic
 
 # 测试 MiniMax 连接
 curl -I https://api.minimaxi.com/anthropic
