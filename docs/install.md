@@ -63,6 +63,32 @@ ls -la ~/.claude-platforms/
 
 ### Step 3: 配置 API Keys
 
+**方式一：使用配置脚本（推荐）**
+
+直接在 Claude Code 中配置 API Key：
+
+```bash
+# 配置智谱 GLM
+~/.claude-platforms/scripts/configure_api_key.sh glm sk-xxxxxxxx
+
+# 配置 MiniMax
+~/.claude-platforms/scripts/configure_api_key.sh minimax eyJhbGciOi...
+
+# 配置 DeepSeek
+~/.claude-platforms/scripts/configure_api_key.sh deepseek sk-xxxxxxxx
+
+# 配置通义千问
+~/.claude-platforms/scripts/configure_api_key.sh qwen sk-xxxxxxxx
+```
+
+查看当前配置状态：
+
+```bash
+~/.claude-platforms/scripts/configure_api_key.sh show
+```
+
+**方式二：手动编辑**
+
 检查 `.env` 文件是否已创建：
 
 ```bash
@@ -71,7 +97,7 @@ cat ~/.claude-platforms/.env
 
 如果显示的是模板值（如 `your-actual-glm-key-here`），询问用户：
 
-> "安装完成！现在需要配置 API Keys。请编辑 `~/.claude-platforms/.env` 文件，填入你的真实 API Keys（智谱 GLM、MiniMax 等）。配置好后告诉我，我来帮你切换平台。"
+> "安装完成！现在需要配置 API Keys。你可以直接告诉我你的 API Key，我来帮你配置，或者手动编辑 `~/.claude-platforms/.env` 文件。"
 
 用户编辑命令：
 
@@ -125,6 +151,8 @@ QWEN_API_KEY=your-actual-qwen-key-here
 | `~/.claude-platforms/switch glm` | 切换到智谱 GLM |
 | `~/.claude-platforms/quick-switch.sh glm` | 一键切换 + 显示指导 |
 | `source ~/.claude-platforms/config.sh glm` | 加载 GLM 配置到当前 shell |
+| `~/.claude-platforms/scripts/configure_api_key.sh show` | 查看当前 API Key 配置状态 |
+| `~/.claude-platforms/scripts/configure_api_key.sh glm sk-xxx` | 配置 GLM API Key |
 
 ## 支持的平台
 
@@ -135,6 +163,31 @@ QWEN_API_KEY=your-actual-qwen-key-here
 | DeepSeek | `deepseek` | 响应快 |
 | 通义千问 | `qwen` | 稳定可靠 |
 | Claude 官方 | `claude` | 最新功能 |
+
+## 可用斜杠命令
+
+安装后可直接使用以下斜杠命令（统一使用 `/sw:` 前缀）：
+
+### 平台切换命令
+
+| 命令 | 功能 |
+|------|------|
+| `/sw:glm` | 切换到智谱 GLM |
+| `/sw:minimax` | 切换到 MiniMax |
+| `/sw:deepseek` | 切换到 DeepSeek |
+| `/sw:qwen` | 切换到通义千问 |
+| `/sw:claude` | 切换到 Claude 官方 |
+
+### API Key 配置命令
+
+| 命令 | 功能 |
+|------|------|
+| `/sw:setkey` | 配置 API Key（交互式选择平台） |
+| `/sw:key-glm` | 配置智谱 GLM API Key |
+| `/sw:key-minimax` | 配置 MiniMax Auth Token |
+| `/sw:key-deepseek` | 配置 DeepSeek API Key |
+| `/sw:key-qwen` | 配置通义千问 API Key |
+| `/sw:key-claude` | 配置 Claude API Key |
 
 ## 常见问题
 

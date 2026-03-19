@@ -1,6 +1,6 @@
 ---
 name: platform-switcher
-description: Claude Code AI 平台切换器。用于在 Claude Code 中快速切换 AI 平台（MiniMax、智谱 GLM、DeepSeek、通义千问、Claude 官方），自动保存会话上下文并提示重启，支持无缝恢复工作进度。在用户提到切换平台、使用特定平台（如"切换到智谱 GLM"、"用 MiniMax 完成这个任务"）或询问当前平台时触发。
+description: 此技能用于在 Claude Code 中切换 AI 平台（MiniMax、智谱 GLM、DeepSeek、通义千问、Claude 官方）。当用户说"切换到智谱 GLM"、"使用 MiniMax"、"用 DeepSeek 完成任务"、"当前是什么平台"或输入 /sw:glm、/sw:minimax、/sw:deepseek、/sw:qwen、/sw:claude 等命令时触发。
 ---
 
 # Platform Switcher - Claude Code AI 平台切换器
@@ -15,6 +15,30 @@ Platform Switcher 是一个 Claude Code 技能，用于在不同的 AI 平台之
 2. **上下文保存** - 自动保存当前会话状态
 3. **无缝恢复** - 重启后自动恢复工作进度
 4. **多平台支持** - MiniMax、智谱 GLM、DeepSeek、通义千问、Claude 官方
+5. **统一命令前缀** - 所有斜杠命令使用 `/sw:` 前缀
+
+## 斜杠命令
+
+### 平台切换命令
+
+| 命令 | 功能 | 示例用法 |
+|------|------|----------|
+| `/sw:glm` | 切换到智谱 GLM | `/sw:glm` 或 "切换到智谱 GLM" |
+| `/sw:minimax` | 切换到 MiniMax | `/sw:minimax` 或 "使用 MiniMax" |
+| `/sw:deepseek` | 切换到 DeepSeek | `/sw:deepseek` 或 "换到 DeepSeek" |
+| `/sw:qwen` | 切换到通义千问 | `/sw:qwen` 或 "用通义千问" |
+| `/sw:claude` | 切换到 Claude 官方 | `/sw:claude` 或 "切回官方" |
+
+### API Key 配置命令
+
+| 命令 | 功能 | 示例用法 |
+|------|------|----------|
+| `/sw:setkey` | 交互式配置 API Key | `/sw:setkey` |
+| `/sw:key-glm` | 配置智谱 GLM API Key | `/sw:key-glm` |
+| `/sw:key-minimax` | 配置 MiniMax Auth Token | `/sw:key-minimax` |
+| `/sw:key-deepseek` | 配置 DeepSeek API Key | `/sw:key-deepseek` |
+| `/sw:key-qwen` | 配置通义千问 API Key | `/sw:key-qwen` |
+| `/sw:key-claude` | 配置 Claude API Key | `/sw:key-claude` |
 
 ## 触发条件
 
@@ -24,20 +48,31 @@ Platform Switcher 是一个 Claude Code 技能，用于在不同的 AI 平台之
 - **提及平台名称**："我想用通义千问"、"GLM 怎么样"
 - **询问当前平台**："当前用的是什么平台"、"现在用的是哪个平台"
 - **请求平台推荐**："哪个平台更适合这个任务"
+- **斜杠命令**：输入 `/sw:glm`、`/sw:minimax` 等命令
 
 ## 支持的平台
 
-| 平台 | 命令 | 特点 | 适用场景 |
-|------|------|------|----------|
-| **智谱 GLM** | `glm` | 三层模型映射（4.5-air/4.7/5） | 日常开发、成本优化 |
-| **MiniMax** | `minimax` | 超长上下文、50分钟超时 | 复杂任务、长时间会话 |
-| **DeepSeek** | `deepseek` | 快速响应 | 简单查询、快速问答 |
-| **通义千问** | `qwen` | 稳定可靠 | 企业应用、生产环境 |
-| **Claude 官方** | `claude` | 原生支持 | 重要任务、最新功能 |
+| 平台 | 命令 | 斜杠命令 | 特点 | 适用场景 |
+|------|------|----------|------|----------|
+| **智谱 GLM** | `glm` | `/sw:glm` | 三层模型映射（4.5-air/4.7/5） | 日常开发、成本优化 |
+| **MiniMax** | `minimax` | `/sw:minimax` | 超长上下文、50分钟超时 | 复杂任务、长时间会话 |
+| **DeepSeek** | `deepseek` | `/sw:deepseek` | 快速响应 | 简单查询、快速问答 |
+| **通义千问** | `qwen` | `/sw:qwen` | 稳定可靠 | 企业应用、生产环境 |
+| **Claude 官方** | `claude` | `/sw:claude` | 原生支持 | 重要任务、最新功能 |
 
 ## 使用流程
 
-### 快速切换（推荐）
+### 方式一：使用斜杠命令（推荐）
+
+直接输入斜杠命令切换平台：
+
+```
+/sw:glm
+```
+
+系统会自动执行切换并提示后续操作。
+
+### 方式二：快速切换脚本
 
 使用一键切换脚本：
 
@@ -182,9 +217,51 @@ switch glm
 ~/.claude-platforms/scripts/get_current_platform.sh
 ```
 
+### configure_api_key.sh
+
+配置 API Key：
+
+```bash
+# 用法
+~/.claude-platforms/scripts/configure_api_key.sh <platform> <api_key>
+
+# 示例
+~/.claude-platforms/scripts/configure_api_key.sh glm sk-xxxxxxxx
+~/.claude-platforms/scripts/configure_api_key.sh minimax eyJhbGciOi...
+
+# 查看当前配置
+~/.claude-platforms/scripts/configure_api_key.sh show
+```
+
 ## 完整示例
 
-### 示例 1：切换到智谱 GLM
+### 示例 1：使用斜杠命令切换
+
+**用户输入**：
+```
+/sw:glm
+```
+
+**Claude 响应**：
+```
+好的，切换到智谱 GLM 平台。
+
+执行切换脚本...
+
+✅ 已选择平台: glm
+
+📝 请在当前终端执行以下命令以加载配置：
+
+   source ~/.claude-platforms/config.sh glm
+
+然后启动 Claude Code:
+
+   claude
+
+重启后将继续使用智谱 GLM 平台。
+```
+
+### 示例 2：自然语言切换
 
 **用户输入**：
 ```
@@ -209,24 +286,7 @@ source ~/.claude-platforms/config.sh glm
 claude
 ```
 
-**Claude 响应**：
-```
-好的，切换到智谱 GLM 平台。
-
-✅ 已选择平台: glm
-
-📝 请在当前终端执行以下命令以加载配置：
-
-   source ~/.claude-platforms/config.sh glm
-
-然后启动 Claude Code:
-
-   claude
-
-重启后将继续使用智谱 GLM 平台。
-```
-
-### 示例 2：询问当前平台
+### 示例 3：询问当前平台
 
 **用户输入**：
 ```
@@ -241,14 +301,34 @@ claude
 
 当前平台：DeepSeek
 
-如果需要切换到其他平台，请告诉我：
-- glm（智谱 GLM）- 适合日常开发
-- minimax（MiniMax）- 适合复杂任务
-- qwen（通义千问）- 企业级稳定
-- claude（官方）- 最新功能
+如果需要切换到其他平台，请使用以下命令：
+- /sw:glm（智谱 GLM）- 适合日常开发
+- /sw:minimax（MiniMax）- 适合复杂任务
+- /sw:qwen（通义千问）- 企业级稳定
+- /sw:claude（官方）- 最新功能
 ```
 
-### 示例 3：平台推荐
+### 示例 4：配置 API Key
+
+**用户输入**：
+```
+/sw:key-glm
+```
+
+**Claude 响应**：
+```
+请提供你的智谱 GLM API Key：
+
+[等待用户输入 API Key]
+
+配置中...
+
+✅ API Key 已保存到 ~/.claude-platforms/.env
+
+现在可以使用 /sw:glm 切换到智谱 GLM 平台。
+```
+
+### 示例 5：平台推荐
 
 **用户输入**：
 ```
@@ -264,14 +344,52 @@ claude
 - 日常开发任务的平衡选择
 - 中文支持良好
 
-是否切换到智谱 GLM？
+是否切换到智谱 GLM？可以使用 /sw:glm 命令切换。
 
 [等待用户确认]
 ```
 
-## 配置要求
+## API Key 配置
 
-### 环境变量文件
+### 方式一：使用斜杠命令（推荐）
+
+```
+/sw:setkey           # 交互式选择平台配置
+/sw:key-glm          # 直接配置智谱 GLM
+/sw:key-minimax      # 直接配置 MiniMax
+/sw:key-deepseek     # 直接配置 DeepSeek
+/sw:key-qwen         # 直接配置通义千问
+/sw:key-claude       # 直接配置 Claude
+```
+
+### 方式二：使用配置脚本
+
+直接在 Claude Code 中配置 API Key：
+
+```bash
+# 配置智谱 GLM
+~/.claude-platforms/scripts/configure_api_key.sh glm sk-xxxxxxxx
+
+# 配置 MiniMax
+~/.claude-platforms/scripts/configure_api_key.sh minimax eyJhbGciOi...
+
+# 配置 DeepSeek
+~/.claude-platforms/scripts/configure_api_key.sh deepseek sk-xxxxxxxx
+
+# 配置通义千问
+~/.claude-platforms/scripts/configure_api_key.sh qwen sk-xxxxxxxx
+
+# 配置 Claude 官方
+~/.claude-platforms/scripts/configure_api_key.sh claude sk-ant-xxxxxx
+```
+
+查看当前配置状态：
+
+```bash
+~/.claude-platforms/scripts/configure_api_key.sh show
+```
+
+### 方式三：手动编辑 .env 文件
 
 确保 `~/.claude-platforms/.env` 文件存在并包含所有 API Keys：
 
@@ -287,6 +405,9 @@ DEEPSEEK_API_KEY=your-deepseek-api-key-here
 
 # 通义千问
 QWEN_API_KEY=your-qwen-api-key-here
+
+# Claude 官方
+ANTHROPIC_API_KEY=your-anthropic-api-key-here
 ```
 
 ### 文件权限
@@ -297,6 +418,30 @@ QWEN_API_KEY=your-qwen-api-key-here
 chmod 600 ~/.claude-platforms/.env
 ```
 
+## 安装和升级
+
+### 安装
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/pwl1987/claude-platform-switcher/main/install.sh | bash
+```
+
+### 升级（保留配置）
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/pwl1987/claude-platform-switcher/main/install.sh | bash -s -- --upgrade
+```
+
+### 验证安装
+
+```bash
+# 检查版本
+cat ~/.claude-platforms/VERSION
+
+# 验证斜杠命令
+ls ~/.claude/skills/ | grep sw:
+```
+
 ## 故障排除
 
 ### 问题：提示 ".env 文件不存在"
@@ -304,7 +449,7 @@ chmod 600 ~/.claude-platforms/.env
 **解决方案**：
 ```bash
 # 创建 .env 文件
-cp .env.example ~/.claude-platforms/.env
+cp ~/.claude-platforms/.env.example ~/.claude-platforms/.env
 
 # 填入 API Keys
 nano ~/.claude-platforms/.env
@@ -335,8 +480,40 @@ echo $ANTHROPIC_BASE_URL
 echo $ANTHROPIC_MODEL
 ```
 
+### 问题：斜杠命令不识别
+
+**解决方案**：
+```bash
+# 检查 skill 目录
+ls ~/.claude/skills/
+
+# 应该看到：sw:glm, sw:minimax, sw:deepseek, sw:qwen, sw:claude
+# 以及：sw:setkey, sw:key-*
+
+# 如果缺失，重新运行安装
+curl -fsSL https://raw.githubusercontent.com/pwl1987/claude-platform-switcher/main/install.sh | bash -s -- --upgrade
+```
+
+## 命令速查表
+
+| 操作 | 命令 |
+|------|------|
+| 切换到智谱 GLM | `/sw:glm` |
+| 切换到 MiniMax | `/sw:minimax` |
+| 切换到 DeepSeek | `/sw:deepseek` |
+| 切换到通义千问 | `/sw:qwen` |
+| 切换到 Claude | `/sw:claude` |
+| 配置 API Key | `/sw:setkey` |
+| 查看当前平台 | `~/.claude-platforms/switch` |
+| 一键切换 | `~/.claude-platforms/quick-switch.sh <平台>` |
+| 加载配置 | `source ~/.claude-platforms/config.sh <平台>` |
+| 查看 API Key 状态 | `~/.claude-platforms/scripts/configure_api_key.sh show` |
+
 ## 参考文档
 
 - `README.md` - 完整使用指南
+- `docs/install.md` - 安装指南
+- `docs/update.md` - 升级指南
 - `references/platforms.md` - 平台详细信息
 - `references/usage.md` - 使用示例
+- `MODEL_MAPPING.md` - 模型映射说明

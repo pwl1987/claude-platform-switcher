@@ -4,7 +4,7 @@
 
 ### 1. 技能文件创建 ✅
 - **位置**: `/data/Code/skill/claude-platform-switcher/.claude/skills/platform-switcher/SKILL.md`
-- **功能**: Claude Code 技能定义，支持自然语言和快捷命令
+- **功能**: Claude Code 技能定义，支持自然语言和斜杠命令
 
 ### 2. 核心脚本配置 ✅
 - **config.sh**: 统一配置加载脚本 (`~/.claude-platforms/config.sh`)
@@ -27,7 +27,16 @@
 
 现在你可以在 Claude Code 中使用以下方式切换平台：
 
-#### 方式 1：自然语言
+#### 方式 1：斜杠命令（推荐）
+```
+/sw:glm        - 切换到智谱 GLM
+/sw:minimax    - 切换到 MiniMax
+/sw:deepseek   - 切换到 DeepSeek
+/sw:qwen       - 切换到通义千问
+/sw:claude     - 切换到 Claude 官方
+```
+
+#### 方式 2：自然语言
 ```
 切换到智谱 GLM
 换到 MiniMax
@@ -35,14 +44,14 @@
 当前用的什么平台？
 ```
 
-#### 方式 2：快捷命令
+#### 方式 3：API Key 配置
 ```
-/glm        - 切换到智谱 GLM
-/minimax    - 切换到 MiniMax
-/deepseek   - 切换到 DeepSeek
-/qwen       - 切换到通义千问
-/claude     - 切换到 Claude 官方
-/platform   - 查看当前平台
+/sw:setkey         - 交互式配置 API Key
+/sw:key-glm        - 配置智谱 GLM
+/sw:key-minimax    - 配置 MiniMax
+/sw:key-deepseek   - 配置 DeepSeek
+/sw:key-qwen       - 配置通义千问
+/sw:key-claude     - 配置 Claude
 ```
 
 ## 下一步操作
@@ -87,13 +96,13 @@ claude
 重启后，在 Claude Code 中输入：
 
 ```
-切换到智谱 GLM
+/sw:glm
 ```
 
 或者：
 
 ```
-/glm
+切换到智谱 GLM
 ```
 
 Claude 应该会自动识别并执行切换！
@@ -104,18 +113,18 @@ Claude 应该会自动识别并执行切换！
 用户输入 → 技能识别 → 执行脚本 → 加载配置 → 提示重启
    ↓           ↓          ↓          ↓          ↓
 "切换到GLM"  识别意图   quick-switch  设置环境变量  显示指导
-/glm        提取平台    执行切换     ANTHROPIC_*  "Ctrl+D"
+/sw:glm     提取平台    执行切换     ANTHROPIC_*  "Ctrl+D"
 ```
 
 ## 平台选择建议
 
-| 任务类型 | 推荐平台 | 命令 | 理由 |
-|---------|---------|------|------|
-| 日常编程 | 智谱 GLM | `/glm` | 性价比高，三层模型 |
-| 复杂重构 | MiniMax | `/minimax` | 超长上下文，50分钟超时 |
-| 快速问答 | DeepSeek | `/deepseek` | 响应快 |
-| 生产环境 | 通义千问 | `/qwen` | 稳定可靠 |
-| 测试新功能 | Claude 官方 | `/claude` | 原生支持 |
+| 任务类型 | 推荐平台 | 斜杠命令 | 理由 |
+|---------|---------|----------|------|
+| 日常编程 | 智谱 GLM | `/sw:glm` | 性价比高，三层模型 |
+| 复杂重构 | MiniMax | `/sw:minimax` | 超长上下文，50分钟超时 |
+| 快速问答 | DeepSeek | `/sw:deepseek` | 响应快 |
+| 生产环境 | 通义千问 | `/sw:qwen` | 稳定可靠 |
+| 测试新功能 | Claude 官方 | `/sw:claude` | 原生支持 |
 
 ## 故障排除
 
@@ -123,7 +132,7 @@ Claude 应该会自动识别并执行切换！
 
 1. **检查技能文件是否存在**：
    ```bash
-   ls -la /data/Code/skill/claude-platform-switcher/.claude/skills/platform-switcher/SKILL.md
+   ls ~/.claude/skills/ | grep sw:
    ```
 
 2. **重启 Claude Code**：
@@ -138,6 +147,19 @@ Claude 应该会自动识别并执行切换！
    # 确保 .env 文件存在并已填入 API Keys
    cat ~/.claude-platforms/.env
    ```
+
+### 斜杠命令不识别？
+
+```bash
+# 检查 skill 目录
+ls ~/.claude/skills/
+
+# 应该看到：sw:glm, sw:minimax, sw:deepseek, sw:qwen, sw:claude
+# 以及：sw:setkey, sw:key-*
+
+# 如果缺失，重新运行安装
+curl -fsSL https://raw.githubusercontent.com/pwl1987/claude-platform-switcher/main/install.sh | bash -s -- --upgrade
+```
 
 ### API Keys 获取地址
 
@@ -166,13 +188,19 @@ claude-platform-switcher/
 ├── README.md                         # 项目说明
 └── SKILL.md                          # 技能文档
 
-~/.claude-platforms/                  # 安装目录
-├── .env                              # API Keys (已创建)
-├── .current                          # 当前平台记录
-├── config.sh                         # ✅ 配置脚本 (已创建)
-├── switch                            # 切换脚本
-├── quick-switch.sh                   # 一键切换脚本
-└── .gitignore                        # Git 忽略规则
+~/.claude/skills/                     # 斜杠命令目录
+├── platform-switcher/                # 主技能
+├── sw:glm/                           # GLM 切换命令
+├── sw:minimax/                       # MiniMax 切换命令
+├── sw:deepseek/                      # DeepSeek 切换命令
+├── sw:qwen/                          # 通义千问切换命令
+├── sw:claude/                        # Claude 切换命令
+├── sw:setkey/                        # API Key 配置命令
+├── sw:key-glm/                       # GLM Key 配置
+├── sw:key-minimax/                   # MiniMax Key 配置
+├── sw:key-deepseek/                  # DeepSeek Key 配置
+├── sw:key-qwen/                      # 通义千问 Key 配置
+└── sw:key-claude/                    # Claude Key 配置
 ```
 
 ## 成功标志
@@ -197,4 +225,4 @@ claude-platform-switcher/
 
 ---
 
-**🎉 恭喜！你现在可以在 Claude Code 中用自然语言切换 AI 平台了！**
+**🎉 恭喜！你现在可以在 Claude Code 中用斜杠命令切换 AI 平台了！**

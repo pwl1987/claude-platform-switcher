@@ -116,13 +116,40 @@ claude
 
 ## 🎯 支持的平台
 
-| 平台 | 命令 | 特点 | 适用场景 |
-|------|------|------|----------|
-| **智谱 GLM** | `glm` | 性价比高，三层模型 | 日常开发、编程任务 |
-| **MiniMax** | `minimax` | 超长上下文，50分钟超时 | 复杂任务、长代码分析 |
-| **DeepSeek** | `deepseek` | 响应快 | 快速查询、简单问答 |
-| **通义千问** | `qwen` | 稳定可靠 | 企业环境、重要任务 |
-| **Claude 官方** | `claude` | 最新功能 | 质量优先、测试新特性 |
+| 平台 | 命令 | 斜杠命令 | 特点 | 适用场景 |
+|------|------|----------|------|----------|
+| **智谱 GLM** | `glm` | `/sw:glm` | 性价比高，三层模型 | 日常开发、编程任务 |
+| **MiniMax** | `minimax` | `/sw:minimax` | 超长上下文，50分钟超时 | 复杂任务、长代码分析 |
+| **DeepSeek** | `deepseek` | `/sw:deepseek` | 响应快 | 快速查询、简单问答 |
+| **通义千问** | `qwen` | `/sw:qwen` | 稳定可靠 | 企业环境、重要任务 |
+| **Claude 官方** | `claude` | `/sw:claude` | 最新功能 | 质量优先、测试新特性 |
+
+---
+
+## 🔧 斜杠命令
+
+安装后可在 Claude Code 中直接使用以下斜杠命令：
+
+### 平台切换
+
+| 命令 | 功能 |
+|------|------|
+| `/sw:glm` | 切换到智谱 GLM |
+| `/sw:minimax` | 切换到 MiniMax |
+| `/sw:deepseek` | 切换到 DeepSeek |
+| `/sw:qwen` | 切换到通义千问 |
+| `/sw:claude` | 切换到 Claude 官方 |
+
+### API Key 配置
+
+| 命令 | 功能 |
+|------|------|
+| `/sw:setkey` | 交互式配置 API Key |
+| `/sw:key-glm` | 配置智谱 GLM API Key |
+| `/sw:key-minimax` | 配置 MiniMax Auth Token |
+| `/sw:key-deepseek` | 配置 DeepSeek API Key |
+| `/sw:key-qwen` | 配置通义千问 API Key |
+| `/sw:key-claude` | 配置 Claude API Key |
 
 ---
 
@@ -206,13 +233,13 @@ cc-minimax   # 启动 MiniMax
 
 ### 根据任务自动选择平台
 
-| 任务类型 | 推荐平台 | 命令 |
-|---------|---------|------|
-| 日常编程 | 智谱 GLM | `switch glm` |
-| 复杂重构 | MiniMax | `switch minimax` |
-| 快速问答 | DeepSeek | `switch deepseek` |
-| 重要任务 | 通义千问 | `switch qwen` |
-| 测试新功能 | Claude 官方 | `switch claude` |
+| 任务类型 | 推荐平台 | 斜杠命令 |
+|---------|---------|----------|
+| 日常编程 | 智谱 GLM | `/sw:glm` |
+| 复杂重构 | MiniMax | `/sw:minimax` |
+| 快速问答 | DeepSeek | `/sw:deepseek` |
+| 重要任务 | 通义千问 | `/sw:qwen` |
+| 测试新功能 | Claude 官方 | `/sw:claude` |
 
 ### 查看当前平台
 
@@ -509,6 +536,12 @@ claude-platform-switcher/
 ---
 
 ## 📝 更新日志
+
+### v3.3.0 (2026-03-19)
+- ✅ 统一斜杠命令前缀为 `/sw:` (switch 缩写)
+- ✅ 新增 `SKILL.md` 完整操作手册
+- ✅ 优化命令命名规范，提升可识别性
+- ✅ API Key 配置命令改为 `/sw:key-xxx` 格式
 
 ### v3.2.0 (2026-03-19)
 - ✅ 新增 `docs/install.md` - AI Agent 自动安装指南

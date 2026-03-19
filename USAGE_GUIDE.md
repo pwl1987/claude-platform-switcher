@@ -17,11 +17,33 @@ QWEN_API_KEY=your-actual-qwen-key
 
 ### 2. 在 Claude Code 中使用
 
-现在你可以直接在 Claude Code 中使用自然语言或快捷命令切换平台！
+现在你可以直接在 Claude Code 中使用自然语言或斜杠命令切换平台！
 
 ## 使用方式
 
-### 方式 1：自然语言（推荐）
+### 方式 1：斜杠命令（推荐）
+
+```
+/sw:glm
+```
+
+```
+/sw:minimax
+```
+
+```
+/sw:deepseek
+```
+
+```
+/sw:qwen
+```
+
+```
+/sw:claude
+```
+
+### 方式 2：自然语言
 
 直接在 Claude Code 中说：
 
@@ -41,47 +63,32 @@ QWEN_API_KEY=your-actual-qwen-key
 当前用的什么平台？
 ```
 
-### 方式 2：快捷命令
+### 方式 3：API Key 配置命令
 
 ```
-/glm
-```
-
-```
-/minimax
-```
-
-```
-/deepseek
-```
-
-```
-/qwen
-```
-
-```
-/claude
-```
-
-```
-/platform 或 /current
+/sw:setkey           # 交互式选择平台配置
+/sw:key-glm          # 直接配置智谱 GLM
+/sw:key-minimax      # 直接配置 MiniMax
+/sw:key-deepseek     # 直接配置 DeepSeek
+/sw:key-qwen         # 直接配置通义千问
+/sw:key-claude       # 直接配置 Claude
 ```
 
 ## 平台选择建议
 
-| 任务类型 | 推荐平台 | 命令 | 理由 |
-|---------|---------|------|------|
-| 日常编程 | 智谱 GLM | `/glm` | 性价比高 |
-| 复杂重构 | MiniMax | `/minimax` | 超长上下文 |
-| 快速问答 | DeepSeek | `/deepseek` | 响应快 |
-| 生产环境 | 通义千问 | `/qwen` | 稳定可靠 |
-| 测试新功能 | Claude 官方 | `/claude` | 原生支持 |
+| 任务类型 | 推荐平台 | 斜杠命令 | 理由 |
+|---------|---------|----------|------|
+| 日常编程 | 智谱 GLM | `/sw:glm` | 性价比高 |
+| 复杂重构 | MiniMax | `/sw:minimax` | 超长上下文 |
+| 快速问答 | DeepSeek | `/sw:deepseek` | 响应快 |
+| 生产环境 | 通义千问 | `/sw:qwen` | 稳定可靠 |
+| 测试新功能 | Claude 官方 | `/sw:claude` | 原生支持 |
 
 ## 完整对话示例
 
 ### 示例 1：切换到智谱 GLM
 
-**你**: 切换到智谱 GLM
+**你**: `/sw:glm`
 
 **Claude**:
 ```
@@ -97,9 +104,9 @@ QWEN_API_KEY=your-actual-qwen-key
 重启后将使用智谱 GLM 平台。
 ```
 
-### 示例 2：使用快捷命令
+### 示例 2：使用自然语言
 
-**你**: `/minimax`
+**你**: 切换到 MiniMax
 
 **Claude**:
 ```
@@ -126,15 +133,30 @@ QWEN_API_KEY=your-actual-qwen-key
 当前平台: DeepSeek
 
 可用平台:
-  - glm      智谱 GLM（三层模型，性价比高）
-  - minimax  MiniMax（超长上下文，50分钟超时）
-  - qwen     通义千问（稳定可靠）
-  - claude   Claude 官方（最新功能）
+  - /sw:glm      智谱 GLM（三层模型，性价比高）
+  - /sw:minimax  MiniMax（超长上下文，50分钟超时）
+  - /sw:qwen     通义千问（稳定可靠）
+  - /sw:claude   Claude 官方（最新功能）
 
-需要切换到其他平台吗？直接告诉我平台名称即可。
+需要切换到其他平台吗？直接使用斜杠命令即可。
 ```
 
-### 示例 4：请求推荐
+### 示例 4：配置 API Key
+
+**你**: `/sw:key-glm`
+
+**Claude**:
+```
+请提供你的智谱 GLM API Key：
+
+[等待用户输入]
+
+✅ API Key 已保存到 ~/.claude-platforms/.env
+
+现在可以使用 /sw:glm 切换到智谱 GLM 平台。
+```
+
+### 示例 5：请求推荐
 
 **你**: 这个重构任务用哪个平台比较好？
 
@@ -147,8 +169,31 @@ QWEN_API_KEY=your-actual-qwen-key
 - MiniMax 支持超长上下文（50分钟超时）
 - 适合复杂的长时间会话
 
-是否切换到 MiniMax？
+使用 /sw:minimax 切换到 MiniMax 平台。
 ```
+
+## 斜杠命令速查表
+
+### 平台切换
+
+| 命令 | 功能 |
+|------|------|
+| `/sw:glm` | 切换到智谱 GLM |
+| `/sw:minimax` | 切换到 MiniMax |
+| `/sw:deepseek` | 切换到 DeepSeek |
+| `/sw:qwen` | 切换到通义千问 |
+| `/sw:claude` | 切换到 Claude 官方 |
+
+### API Key 配置
+
+| 命令 | 功能 |
+|------|------|
+| `/sw:setkey` | 交互式配置 API Key |
+| `/sw:key-glm` | 配置智谱 GLM |
+| `/sw:key-minimax` | 配置 MiniMax |
+| `/sw:key-deepseek` | 配置 DeepSeek |
+| `/sw:key-qwen` | 配置通义千问 |
+| `/sw:key-claude` | 配置 Claude |
 
 ## 技能工作原理
 
@@ -163,9 +208,23 @@ QWEN_API_KEY=your-actual-qwen-key
 ### 问题：技能没有响应
 
 **解决方案**：
-1. 确认技能文件存在：`ls -la /data/Code/skill/claude-platform-switcher/.claude/skills/platform-switcher/SKILL.md`
+1. 确认技能文件存在：`ls ~/.claude/skills/ | grep sw:`
 2. 重启 Claude Code：`Ctrl+D` 退出，然后 `claude` 重新启动
 3. 检查技能是否被正确加载
+
+### 问题：斜杠命令不识别
+
+**解决方案**：
+```bash
+# 检查 skill 目录
+ls ~/.claude/skills/
+
+# 应该看到：sw:glm, sw:minimax, sw:deepseek, sw:qwen, sw:claude
+# 以及：sw:setkey, sw:key-*
+
+# 如果缺失，重新运行安装
+curl -fsSL https://raw.githubusercontent.com/pwl1987/claude-platform-switcher/main/install.sh | bash -s -- --upgrade
+```
 
 ### 问题：提示 ".env 文件不存在"
 

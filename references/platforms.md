@@ -4,13 +4,13 @@
 
 ## 平台概览
 
-| 平台 | 命令 | BASE_URL | 认证方式 | 适用场景 |
-|------|------|----------|----------|----------|
-| **智谱 GLM** | `glm` | `https://open.bigmodel.cn/api/anthropic` | `API_KEY` | 日常开发、成本优化 |
-| **MiniMax** | `minimax` | `https://api.minimaxi.com/anthropic` | `AUTH_TOKEN` | 复杂任务、长时间会话 |
-| **DeepSeek** | `deepseek` | `https://api.deepseek.com` | `API_KEY` | 快速查询、简单任务 |
-| **通义千问** | `qwen` | `https://dashscope.aliyuncs.com/compatible-mode/v1` | `API_KEY` | 企业应用、稳定可靠 |
-| **Claude 官方** | `claude` | 默认 | 默认 | 生产环境、最新功能 |
+| 平台 | 命令 | 斜杠命令 | BASE_URL | 认证方式 | 适用场景 |
+|------|------|----------|----------|----------|----------|
+| **智谱 GLM** | `glm` | `/sw:glm` | `https://open.bigmodel.cn/api/anthropic` | `API_KEY` | 日常开发、成本优化 |
+| **MiniMax** | `minimax` | `/sw:minimax` | `https://api.minimaxi.com/anthropic` | `AUTH_TOKEN` | 复杂任务、长时间会话 |
+| **DeepSeek** | `deepseek` | `/sw:deepseek` | `https://api.deepseek.com` | `API_KEY` | 快速查询、简单任务 |
+| **通义千问** | `qwen` | `/sw:qwen` | `https://dashscope.aliyuncs.com/compatible-mode/v1` | `API_KEY` | 企业应用、稳定可靠 |
+| **Claude 官方** | `claude` | `/sw:claude` | 默认 | 默认 | 生产环境、最新功能 |
 
 ---
 

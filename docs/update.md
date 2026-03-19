@@ -56,7 +56,38 @@ cat ~/.claude-platforms/VERSION
 
 # 测试切换命令
 ~/.claude-platforms/switch
+
+# 验证斜杠命令已更新
+ls ~/.claude/skills/
+
+# 应该看到：
+# platform-switcher, sw:glm, sw:minimax, sw:deepseek, sw:qwen, sw:claude
+# sw:setkey, sw:key-glm, sw:key-minimax, sw:key-deepseek, sw:key-qwen, sw:key-claude
+
+# 验证新脚本
+ls ~/.claude-platforms/scripts/configure_api_key.sh
+
+# 测试 API Key 配置脚本
+~/.claude-platforms/scripts/configure_api_key.sh show
 ```
+
+### ⚠️ 命令名称变化
+
+从 v3.3.0 版本开始，所有斜杠命令统一使用 `/sw:` 前缀：
+
+| 旧命令 | 新命令 |
+|--------|--------|
+| `/glm` | `/sw:glm` |
+| `/minimax` | `/sw:minimax` |
+| `/deepseek` | `/sw:deepseek` |
+| `/qwen` | `/sw:qwen` |
+| `/claude` | `/sw:claude` |
+| `/setkey` | `/sw:setkey` |
+| `/setkey-glm` | `/sw:key-glm` |
+| `/setkey-minimax` | `/sw:key-minimax` |
+| `/setkey-deepseek` | `/sw:key-deepseek` |
+| `/setkey-qwen` | `/sw:key-qwen` |
+| `/setkey-claude` | `/sw:key-claude` |
 
 ### Step 5: 汇报结果
 
@@ -97,6 +128,10 @@ cp VERSION ~/.claude-platforms/
 - [ ] `~/.claude-platforms/.current` 显示正确的平台
 - [ ] `~/.claude-platforms/switch` 命令正常工作
 - [ ] `~/.claude-platforms/VERSION` 显示新版本号
+- [ ] `~/.claude/skills/` 目录包含所有斜杠命令（使用 `/sw:` 前缀）：
+  - 平台切换：`sw:glm`, `sw:minimax`, `sw:deepseek`, `sw:qwen`, `sw:claude`
+  - API Key 配置：`sw:setkey`, `sw:key-glm`, `sw:key-minimax`, `sw:key-deepseek`, `sw:key-qwen`, `sw:key-claude`
+- [ ] `~/.claude-platforms/scripts/configure_api_key.sh` 脚本存在
 
 ---
 

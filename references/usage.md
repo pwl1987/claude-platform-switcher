@@ -25,7 +25,12 @@
 
 ### 2. 切换平台
 
-在 Claude Code 中使用 Skill：
+在 Claude Code 中使用斜杠命令：
+```
+/sw:glm
+```
+
+或使用自然语言：
 ```
 切换到智谱 GLM
 ```
@@ -49,6 +54,31 @@ source ~/.claude-platforms/config.sh glm
 echo $ANTHROPIC_BASE_URL
 echo $ANTHROPIC_MODEL
 ```
+
+---
+
+## 斜杠命令
+
+### 平台切换
+
+| 命令 | 功能 |
+|------|------|
+| `/sw:glm` | 切换到智谱 GLM |
+| `/sw:minimax` | 切换到 MiniMax |
+| `/sw:deepseek` | 切换到 DeepSeek |
+| `/sw:qwen` | 切换到通义千问 |
+| `/sw:claude` | 切换到 Claude 官方 |
+
+### API Key 配置
+
+| 命令 | 功能 |
+|------|------|
+| `/sw:setkey` | 交互式配置 API Key |
+| `/sw:key-glm` | 配置智谱 GLM API Key |
+| `/sw:key-minimax` | 配置 MiniMax Auth Token |
+| `/sw:key-deepseek` | 配置 DeepSeek API Key |
+| `/sw:key-qwen` | 配置通义千问 API Key |
+| `/sw:key-claude` | 配置 Claude API Key |
 
 ---
 

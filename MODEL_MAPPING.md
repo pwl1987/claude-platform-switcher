@@ -203,11 +203,25 @@
 ~/.claude-platforms/quick-switch.sh deepseek
 ~/.claude-platforms/quick-switch.sh qwen
 ~/.claude-platforms/quick-switch.sh claude
+```
 
-# 或在 Claude Code 中使用技能命令
-/glm
-/minimax
-/deepseek
-/qwen
-/claude
+或在 Claude Code 中使用斜杠命令：
+
+```
+/sw:glm
+/sw:minimax
+/sw:deepseek
+/sw:qwen
+/sw:claude
+```
+
+API Key 配置：
+
+```
+/sw:setkey         # 交互式配置
+/sw:key-glm        # 配置智谱 GLM
+/sw:key-minimax    # 配置 MiniMax
+/sw:key-deepseek   # 配置 DeepSeek
+/sw:key-qwen       # 配置通义千问
+/sw:key-claude     # 配置 Claude
 ```
